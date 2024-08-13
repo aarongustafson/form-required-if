@@ -23,11 +23,13 @@
 			margin-block: .5rem 1rem;
 		}
 		label:has([required]) {
-			outline: 1px solid red;
+			outline: 3px solid red;
+			outline-offset: 7px;
 		}
 	</style>
 </head>
 <body>
+	<p>Labels that contain a required field get a red outline.</p>
 	<form action="#">
 		<label>Email address
 			<input type="email" name="email">
