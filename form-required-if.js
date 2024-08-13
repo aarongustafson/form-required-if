@@ -52,7 +52,7 @@ class FormRequiredIfElement extends HTMLElement {
 
 		if ( this.__indicator.indexOf("<") !== 0 ) {
 			this.__$indicator = document.createElement("span");
-			this.__$indicator.style.unset = "all";
+			this.__$indicator.style.all = "initial";
 			this.__$indicator.innerHTML = this.__indicator;
 		} else {
 			let $template = document.createElement('template');
@@ -97,7 +97,6 @@ class FormRequiredIfElement extends HTMLElement {
 			test_conditions =  this.__conditions.filter(condition => condition.trim().match(new RegExp(`^${field_name}=`)));
 		}
 		test_conditions.forEach(condition => {
-			console.log(condition);
 			const [ field, value ] = condition.split("=");
 			
 			if ( ! this.__$fields[field] ) { return; }
