@@ -52,7 +52,6 @@ class FormRequiredIfElement extends HTMLElement {
 
 		if ( this.__indicator.indexOf("<") !== 0 ) {
 			this.__$indicator = document.createElement("span");
-			this.__$indicator.style.all = "initial";
 			this.__$indicator.innerHTML = this.__indicator;
 		} else {
 			let $template = document.createElement('template');
