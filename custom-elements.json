@@ -4,33 +4,33 @@
 	"modules": [
 		{
 			"kind": "javascript-module",
-			"path": "form-required-checkboxes.js",
+			"path": "form-required-if.js",
 			"declarations": [
 				{
 					"kind": "class",
 					"customElement": true,
-					"name": "FormRequiredCheckboxesElement",
-					"tagName": "form-required-checkboxes",
-					"description": "Web component that enables requirement rules for checkbox groups.",
+					"name": "FormRequiredIfElement",
+					"tagName": "form-required-if",
+					"description": "Web component that enables fields to be required based on the value(s) of other fields.",
 					"members": [],
 					"attributes": [
 						{
-							"name": "required",
-							"description": "The number (or range) of required checkboxes.",
+							"name": "conditions",
+							"description": "A double pipe (||) separated list of `name`/`value` pairs that, if true, would make this field required",
 							"type": {
 								"text": "string"
 							}
 						},
 						{
-							"name": "notice",
-							"description": "The notice message describing the requirement.",
+							"name": "indicator",
+							"description": "An optional attribute declaring the “required” indicator to be added to the label.",
 							"type": {
 								"text": "string"
 							}
 						},
 						{
-							"name": "error",
-							"description": "The error message to show when the requirement is not met.",
+							"name": "indicator-position",
+							"description": "Optional attribute declaring where the indicator should be placed (before or after).",
 							"type": {
 								"text": "string"
 							}
@@ -44,16 +44,16 @@
 			"exports": [
 				{
 					"kind": "js",
-					"name": "FormRequiredCheckboxesElement",
+					"name": "FormRequiredIfElement",
 					"declaration": {
-						"name": "FormRequiredCheckboxesElement"
+						"name": "FormRequiredIfElement"
 					}
 				},
 				{
 					"kind": "custom-element-definition",
-					"name": "form-required-checkboxes",
+					"name": "form-required-if",
 					"declaration": {
-						"name": "FormRequiredCheckboxesElement"
+						"name": "FormRequiredIfElement"
 					}
 				}
 			]
