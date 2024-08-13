@@ -1,0 +1,32 @@
+{
+	"name": "@aarongustafson/form-required-if",
+	"version": "1.0.0",
+	"description": "Web component that enables fields to be required based on the value(s) of other fields.",
+	"main": "form-required-if.js",
+	"module": "form-required-if.module.js",
+	"customElements": "custom-elements.json",
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/aarongustafson/form-required-if.git"
+	},
+	"author": "Aaron Gustafson <aaron@easy-designs.net> (https://www.aaron-gustafson.com/)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/aarongustafson/form-required-if/issues"
+	},
+	"homepage": "https://github.com/aarongustafson/form-required-if#readme",
+	"devDependencies": {
+		"prettier": "^3.3.2"
+	},
+	"keywords": [
+		"html",
+		"custom element",
+		"forms"
+	]
+}

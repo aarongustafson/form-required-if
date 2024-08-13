@@ -1,0 +1,62 @@
+{
+	"schemaVersion": "2.1.0",
+	"readme": "README.md",
+	"modules": [
+		{
+			"kind": "javascript-module",
+			"path": "form-required-checkboxes.js",
+			"declarations": [
+				{
+					"kind": "class",
+					"customElement": true,
+					"name": "FormRequiredCheckboxesElement",
+					"tagName": "form-required-checkboxes",
+					"description": "Web component that enables requirement rules for checkbox groups.",
+					"members": [],
+					"attributes": [
+						{
+							"name": "required",
+							"description": "The number (or range) of required checkboxes.",
+							"type": {
+								"text": "string"
+							}
+						},
+						{
+							"name": "notice",
+							"description": "The notice message describing the requirement.",
+							"type": {
+								"text": "string"
+							}
+						},
+						{
+							"name": "error",
+							"description": "The error message to show when the requirement is not met.",
+							"type": {
+								"text": "string"
+							}
+						}
+					],
+					"superclass": {
+						"name": "HTMLElement"
+					}
+				}
+			],
+			"exports": [
+				{
+					"kind": "js",
+					"name": "FormRequiredCheckboxesElement",
+					"declaration": {
+						"name": "FormRequiredCheckboxesElement"
+					}
+				},
+				{
+					"kind": "custom-element-definition",
+					"name": "form-required-checkboxes",
+					"declaration": {
+						"name": "FormRequiredCheckboxesElement"
+					}
+				}
+			]
+		}
+	]
+}
