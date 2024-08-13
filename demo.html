@@ -49,7 +49,7 @@
 			</select>
 		</label>
 
-		<form-required-if conditions="email=*,test=3" indicator="*" indicator-position="before">
+		<form-required-if conditions="email=*||test=3" indicator="*" indicator-position="before">
 			<label>Depends on email or select
 				<input type="text" name="dep2" aria-describedby="dep2-description">
 				<small id="dep1-description">This field is required if the email field is filled out or if the select has Option 3 chosen</small>

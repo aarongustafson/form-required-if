@@ -97,6 +97,7 @@ class FormRequiredIfElement extends HTMLElement {
 			test_conditions =  this.__conditions.filter(condition => condition.trim().match(new RegExp(`^${field_name}=`)));
 		}
 		test_conditions.forEach(condition => {
+			console.log(condition);
 			const [ field, value ] = condition.split("=");
 			
 			if ( ! this.__$fields[field] ) { return; }
