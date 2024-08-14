@@ -18,9 +18,13 @@
         border: 0;
         padding: 0;
       }
+      legend {
+        margin-block: 0;
+      }
       fieldset > label {
         font-weight: normal;
         margin-block: .25rem;
+        min-height: 23px;
       }
 			input:not([type=checkbox],[type=radio],[type=submit],[type=reset]),
 			select,
@@ -37,11 +41,14 @@
 				outline: 3px solid red;
 				outline-offset: 7px;
 			}
-      .other-radio {
+      .other-radio,
+      .other-checkbox {
         display: flex;
         margin-block: .25rem;
+        min-height: 23px;
       }
-      .other-radio label {
+      .other-radio label,
+      .other-checkbox label {
         font-weight: normal;
         margin-block: 0;
         margin-inline-end: .5rem;
@@ -108,6 +115,21 @@
           <form-required-if conditions="radio=other">
             <label class="dependent"><span hidden>Other value</span>
               <input name="radio-other">
+            </label>
+          </form-required-if>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Choose an option</legend>
+        <label><input type="checkbox" name="checkbox[]" value="1"> Option 1</label>
+        <label><input type="checkbox" name="checkbox[]" value="2"> Option 2</label>
+        <label><input type="checkbox" name="checkbox[]" value="3"> Option 3</label>
+        <div class="other-checkbox">
+          <label><input type="checkbox" name="checkbox[]" value="other"> Other</label>
+          <form-required-if conditions="checkbox[]=other">
+            <label class="dependent"><span hidden>Other value</span>
+              <input name="checkbox-other">
             </label>
           </form-required-if>
         </div>

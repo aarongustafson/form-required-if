@@ -1,7 +1,7 @@
 export class FormRequiredIfElement extends HTMLElement {
 	connectedCallback() {
 		this.__$field = this.querySelector("input:not([type=submit],[type=image],[type=button]),select,textarea");
-    this.__$form = this.closest("form");
+		this.__$form = this.closest("form");
 		this.__is_required = false;
 
 		this.__conditions = this.getAttribute("conditions").split("||");
@@ -81,6 +81,48 @@ export class FormRequiredIfElement extends HTMLElement {
 		this.__toggleIndicator();
 		this.__is_required = false;
 	}
+
+	__getCurrentValue( $field ) {
+		// Checkboxes are special
+		if ( $field.length &&
+				 $field[0].type &&
+				 $field[0].type == "checkbox" ) {
+			let value = [];
+			let length = $field.length;
+			while ( length-- ) {
+				let $current_field = $field[length];
+				if ( $current_field.checked ) {
+					value.push( $current_field.value );
+				}
+			}
+			value.reverse();
+			return value;
+		}
+		return $field.value;
+	}
+
+	__valuesMatch( condition_value, current_value ) {
+		let match = false;
+		
+		// precise match
+		if ( condition_value == current_value ) {
+			match = true;
+		} else
+		
+		// Anything
+		if ( condition_value == "*" && current_value != "" ) {
+			match = true;
+		} else
+
+		// Checkboxes
+		if ( current_value instanceof Array && 
+				 current_value.includes( condition_value )
+		) {
+			match = true;
+		}
+		
+		return match;
+	}
 	
 	__checkIfRequired() {
 		let should_be_required = false;
@@ -88,11 +130,11 @@ export class FormRequiredIfElement extends HTMLElement {
 		test_conditions.forEach(condition => {
 			const [ name, value ] = condition.split("=");
 			
-      const $field = this.__$form.elements[name];
-      if ( ! $field ) { return; }
-			
-			const current_value = $field.value;
-      if ( ( value == "*" && current_value != "" ) || value == current_value ) {
+			const $field = this.__$form.elements[name];
+			if ( ! $field ) { return; }
+
+			const current_value = this.__getCurrentValue( $field );
+			if ( this.__valuesMatch( value, current_value ) ) {
 				should_be_required = true;
 			}
 		});
