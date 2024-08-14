@@ -1,80 +1,81 @@
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Required Checkboxes Web Component Demo</title>
-	<style>
-		body {
-			margin: 1rem;
-		}
-		label:not(:has([type=checkbox])) {
-			font-weight: bold;
-			display: block;
-			margin-block: 1rem;
-		}
-		input:not([type=checkbox],[type=radio],[type=submit],[type=reset]),
-		select,
-		textarea {
-			display: block;
-		}
-		small {
-			display: block;
-			font-style: italic;
-			font-weight: normal;
-			margin-block: .5rem 1rem;
-		}
-		label:has([required]) {
-			outline: 3px solid red;
-			outline-offset: 7px;
-		}
-	</style>
-</head>
-<body>
-	<p>Labels that contain a required field get a red outline.</p>
-	<form action="#">
-		<label>Email address
-			<input type="email" name="email">
-		</label>
-
-		<form-required-if conditions="email=*" indicator="*">
-			<label>Depends on email
-				<input type="text" name="dep1" aria-describedby="dep1-description">
-				<small id="dep1-description">This field is required if the email field is filled out</small>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Required Checkboxes Web Component Demo</title>
+		<style>
+			body {
+				margin: 1rem;
+			}
+			label:not(:has([type=checkbox])) {
+				font-weight: bold;
+				display: block;
+				margin-block: 1rem;
+			}
+			input:not([type=checkbox],[type=radio],[type=submit],[type=reset]),
+			select,
+			textarea {
+				display: block;
+			}
+			small {
+				display: block;
+				font-style: italic;
+				font-weight: normal;
+				margin-block: .5rem 1rem;
+			}
+			label:has([required]) {
+				outline: 3px solid red;
+				outline-offset: 7px;
+			}
+		</style>
+	</head>
+	<body>
+		<p>Labels that contain a required field get a red outline.</p>
+		<form action="#">
+			<label>Email address
+				<input type="email" name="email">
 			</label>
-		</form-required-if>
 
-		<label>Select field
-			<select name="test">
-				<option value="">Select an option</option>
-				<option value="1">Option 1</option>
-				<option value="2">Option 2</option>
-				<option value="3">Option 3</option>
-			</select>
-		</label>
+			<form-required-if conditions="email=*" indicator="*">
+				<label>Depends on email
+					<input name="dep1" aria-describedby="dep1-description">
+					<small id="dep1-description">This field will become required if the email field is filled out</small>
+				</label>
+			</form-required-if>
 
-		<form-required-if conditions="email=*||test=3" indicator="*" indicator-position="before">
-			<label>Depends on email or select
-				<input type="text" name="dep2" aria-describedby="dep2-description">
-				<small id="dep1-description">This field is required if the email field is filled out or if the select has Option 3 chosen</small>
+			<label>Choose an option
+				<select name="choose">
+					<option value="">Select an option</option>
+					<option value="1">Option 1</option>
+					<option value="2">Option 2</option>
+					<option value="3">Option 3</option>
+				</select>
 			</label>
-		</form-required-if>
 
-		<form-required-if conditions="email=*||test=3" indicator="<b aria-hidden='true'>*</b>">
-			<label>Depends on email with custom indicator
-				<input type="text" name="dep2" aria-describedby="dep2-description">
-				<small id="dep1-description">This field is required if the email field is filled out</small>
-			</label>
-		</form-required-if>
+			<form-required-if conditions="email=*||choose=3" indicator="*" indicator-position="before">
+				<label>Depends on email or select
+					<input name="dep2" aria-describedby="dep2-description">
+					<small id="dep2-description">This field is required if the email field is filled out or if the <code>select</code> has Option 3 chosen. It uses a custom indicator placed before the label text.</small>
+				</label>
+			</form-required-if>
 
-		<form-required-if conditions="email=foo@bar.tld">
-			<label>Depends on email being "foo@bar.tld"
-				<input type="text" name="dep2" aria-describedby="dep2-description">
-				<small id="dep1-description">This field is required if the email field is filled out</small>
-			</label>
-		</form-required-if>
+			<form-required-if conditions="email=*" indicator="<b aria-hidden='true'>*</b>">
+				<label>Depends on email
+					<input name="dep3" aria-describedby="dep3-description">
+					<small id="dep3-description">This field is required if the email field is filled out and it uses a custom indicator</small>
+				</label>
+			</form-required-if>
 
-		<button type="submit">Submit</button>
-	</form>
+			<form-required-if conditions="email=foo@bar.tld">
+				<label>Depends on email being "foo@bar.tld"
+					<input name="dep4" aria-describedby="dep4-description">
+					<small id="dep4-description">This field is required if the email field is filled out specifically with the text "foo@bar.tld"</small>
+				</label>
+			</form-required-if>
 
-	<script src="form-required-if.js" async></script>
-</body>
+			<button type="submit">Submit</button>
+		</form>
+
+		<script src="form-required-if.js" async></script>
+	</body>
 </html>
