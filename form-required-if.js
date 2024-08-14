@@ -1,6 +1,7 @@
 class FormRequiredIfElement extends HTMLElement {
 	connectedCallback() {
-		this.__field = this.querySelector("input:not([type=submit],[type=image],[type=button]),select,textarea");
+		this.__$field = this.querySelector("input:not([type=submit],[type=image],[type=button]),select,textarea");
+    this.__$form = this.closest("form");
 		this.__is_required = false;
 
 		this.__conditions = this.getAttribute("conditions").split("||");
@@ -15,15 +16,8 @@ class FormRequiredIfElement extends HTMLElement {
 	}
 
 	__addObservers() {
-		this.__conditions.forEach(condition=>{
-			const [ field ] = condition.split("=");
-			const $field = document.querySelector(`[name=${field}]`);
-			if ( $field ) {
-				this.__$fields[field] = $field;
-				$field.addEventListener("change", this.__checkIfRequired.bind(this), false);
-				$field.addEventListener("keyup", this.__checkIfRequired.bind(this), false);
-			}
-		});
+		this.__$form.addEventListener("change", this.__checkIfRequired.bind(this), false);
+		this.__$form.addEventListener("keyup", this.__checkIfRequired.bind(this), false);
 	}
 
 	__toggleIndicator() {
@@ -75,15 +69,15 @@ class FormRequiredIfElement extends HTMLElement {
 	}
 
 	__makeFieldRequired() {
-		this.__field.required = true;
-		this.__field.setAttribute("aria-required", "true");
+		this.__$field.required = true;
+		this.__$field.setAttribute("aria-required", "true");
 		this.__toggleIndicator();
 		this.__is_required = true;
 	}
 
 	__makeFieldOptional() {
-		this.__field.required = false;
-		this.__field.removeAttribute("aria-required");
+		this.__$field.required = false;
+		this.__$field.removeAttribute("aria-required");
 		this.__toggleIndicator();
 		this.__is_required = false;
 	}
@@ -92,13 +86,13 @@ class FormRequiredIfElement extends HTMLElement {
 		let should_be_required = false;
 		let test_conditions = this.__conditions;
 		test_conditions.forEach(condition => {
-			const [ field, value ] = condition.split("=");
+			const [ name, value ] = condition.split("=");
 			
-			if ( ! this.__$fields[field] ) { return; }
-			const $field = this.__$fields[field];
-
+      const $field = this.__$form.elements[name];
+      if ( ! $field ) { return; }
+			
 			const current_value = $field.value;
-			if ( ( value == "*" && current_value != "" ) || value == current_value ) {
+      if ( ( value == "*" && current_value != "" ) || value == current_value ) {
 				should_be_required = true;
 			}
 		});

@@ -4,14 +4,24 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Required Checkboxes Web Component Demo</title>
 		<style>
-			body {
+      body {
 				margin: 1rem;
 			}
-			label:not(:has([type=checkbox])) {
+      legend,
+			label {
 				font-weight: bold;
 				display: block;
 				margin-block: 1rem;
 			}
+      fieldset {
+        margin-block: 1rem;
+        border: 0;
+        padding: 0;
+      }
+      fieldset > label {
+        font-weight: normal;
+        margin-block: .25rem;
+      }
 			input:not([type=checkbox],[type=radio],[type=submit],[type=reset]),
 			select,
 			textarea {
@@ -27,6 +37,21 @@
 				outline: 3px solid red;
 				outline-offset: 7px;
 			}
+      .other-radio {
+        display: flex;
+        margin-block: .25rem;
+      }
+      .other-radio label {
+        font-weight: normal;
+        margin-block: 0;
+        margin-inline-end: .5rem;
+      }
+      label.dependent {
+        display: none;
+      }
+      label.dependent:has([required]) {
+        display: block;
+      }
 		</style>
 	</head>
 	<body>
@@ -72,6 +97,22 @@
 					<small id="dep4-description">This field is required if the email field is filled out specifically with the text "foo@bar.tld"</small>
 				</label>
 			</form-required-if>
+
+      <fieldset>
+        <legend>Choose an option</legend>
+        <label><input type="radio" name="radio" value="1"> Option 1</label>
+        <label><input type="radio" name="radio" value="2"> Option 2</label>
+        <label><input type="radio" name="radio" value="3"> Option 3</label>
+        <div class="other-radio">
+          <label><input type="radio" name="radio" value="other"> Other</label>
+          <form-required-if conditions="radio=other">
+            <label class="dependent"><span hidden>Other value</span>
+              <input name="radio-other">
+            </label>
+          </form-required-if>
+        </div>
+      </fieldset>
+
 
 			<button type="submit">Submit</button>
 		</form>
