@@ -88,13 +88,9 @@ export class FormRequiredIfElement extends HTMLElement {
 		this.__is_required = false;
 	}
 	
-	__checkIfRequired( e ) {
+	__checkIfRequired() {
 		let should_be_required = false;
 		let test_conditions = this.__conditions;
-		if ( e ) {
-			const field_name = e.target.getAttribute("name");
-			test_conditions =  this.__conditions.filter(condition => condition.trim().match(new RegExp(`^${field_name}=`)));
-		}
 		test_conditions.forEach(condition => {
 			const [ field, value ] = condition.split("=");
 			
