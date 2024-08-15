@@ -32,6 +32,58 @@ export class FormRequiredIfElement extends HTMLElement {
 			this.__$indicator.setAttribute("aria-hidden","true");
 		}
 	}
+
+	__getLabelBoundaries( $label ) {
+		const $children = $label.childNodes;
+		let $first_child = $label.firstChild;
+		let $last_child = $label.lastChild;
+		const contains_field = $label.matches(":has(input,select,textarea)");
+
+		// skip empty text nodes
+		while ( $first_child.nodeType == 3 && $first_child.textContent.trim() == "" ) {
+			if ( $first_child.nextSibling ) {
+				$first_child = $first_child.nextSibling;
+			} else {
+				break;
+			}
+		}
+		while ( $last_child.nodeType == 3 && $last_child.textContent.trim() == "" ) {
+			if ( $last_child.previousSibling ) {
+				$last_child = $last_child.previousSibling;
+			} else {
+				break;
+			}
+		}
+
+		// with a field in the label, the calculation is a bit more complicated
+		if ( contains_field ) {
+			// field comes first
+			if ( $first_child.nodeType == "1" &&
+					 $first_child.matches("input,select,textarea") &&
+					 $first_child.nextSibling ) {
+				$first_child = $first_child.nextSibling;
+			} else
+			// field comes somewhere in the middle
+			{
+				let $field = [...$children].find($child => {
+					return $child.nodeType == "1" && $child.matches("input,select,textarea")
+				});
+				if ( $field ) {
+					$last_child = $field.previousSibling ? $field.previousSibling : $field;
+				}
+			}
+		}
+		return [ $first_child, $last_child ];
+	}
+
+	__trimTextNodes( $label ) {
+		[...$label.childNodes].forEach($node => {
+			if ( $node.nodeType == 3 && 
+					 $node.textContent.trim() != "" ) {
+				$node.textContent = $node.textContent.trim();
+			}
+		});
+	}
 	
 	__prepareIndicator() {
 		if ( ! this.__indicator ) { return; }
@@ -41,8 +93,8 @@ export class FormRequiredIfElement extends HTMLElement {
 		}
 
 		const $label = this.querySelector('label');
-		const $label_text = [...$label.childNodes].filter(node=>node.nodeType=="3")[0];
-		const $next_sibling = $label_text.nextSibling;
+		const [ $label_start, $label_end ] = this.__getLabelBoundaries( $label );
+		this.__trimTextNodes( $label );
 
 		if ( this.__indicator.indexOf("<") !== 0 ) {
 			this.__$indicator = document.createElement("span");
@@ -56,14 +108,13 @@ export class FormRequiredIfElement extends HTMLElement {
 		this.__toggleIndicator();
 
 		if ( this.__indicator_position == "after" ) {
-			$label_text.nodeValue = $label_text.nodeValue.trimEnd();
-			if ( $next_sibling ) {
-				$label.insertBefore( this.__$indicator, $next_sibling );
+			if ( $label_end.nextSibling ) {
+				$label.insertBefore( this.__$indicator, $label_end.nextSibling );
 			} else {
 				$label.appendChild( this.__$indicator );
 			}
 		} else {
-			$label.insertBefore( this.__$indicator, $label_text );
+			$label.insertBefore( this.__$indicator, $label_start );
 		}
 		
 	}
@@ -120,7 +171,7 @@ export class FormRequiredIfElement extends HTMLElement {
 		) {
 			match = true;
 		}
-		
+
 		return match;
 	}
 	
