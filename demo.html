@@ -72,14 +72,14 @@
 			</label>
 
 			<form-required-if conditions="email=*" indicator="*">
-				<label>Depends on email
-					<input name="dep1" aria-describedby="dep1-description">
+				<label for="dep1">Depends on email
+					<input name="dep1" id="dep1" aria-describedby="dep1-description">
 					<small id="dep1-description">This field will become required if the email field is filled out</small>
 				</label>
 			</form-required-if>
 
-			<label>Choose an option
-				<select name="choose">
+			<label for="choose">Choose an option
+				<select name="choose" id="choose">
 					<option value="">Select an option</option>
 					<option value="1">Option 1</option>
 					<option value="2">Option 2</option>
@@ -88,36 +88,36 @@
 			</label>
 
 			<form-required-if conditions="email=*||choose=3" indicator="*" indicator-position="before">
-				<label>Depends on email or select
-					<input name="dep2" aria-describedby="dep2-description">
+				<label for="dep2">Depends on email or select
+					<input name="dep2" id="dep2" aria-describedby="dep2-description">
 					<small id="dep2-description">This field is required if the email field is filled out or if the <code>select</code> has Option 3 chosen. It uses a custom indicator placed before the label text.</small>
 				</label>
 			</form-required-if>
 
 			<form-required-if conditions="email=*" indicator="<b>*</b>">
-				<label>Depends on email
-					<input name="dep3" aria-describedby="dep3-description">
+				<label for="dep3">Depends on email
+					<input name="dep3" id="dep3" aria-describedby="dep3-description">
 					<small id="dep3-description">This field is required if the email field is filled out and it uses a custom indicator</small>
 				</label>
 			</form-required-if>
 
 			<form-required-if conditions="email=foo@bar.tld">
-				<label>Depends on email being "foo@bar.tld"
-					<input name="dep4" aria-describedby="dep4-description">
+				<label for="dep4">Depends on email being "foo@bar.tld"
+					<input name="dep4" id="dep4" aria-describedby="dep4-description">
 					<small id="dep4-description">This field is required if the email field is filled out specifically with the text "foo@bar.tld"</small>
 				</label>
 			</form-required-if>
 
       <fieldset>
         <legend>Choose an option</legend>
-        <label><input type="radio" name="radio" value="1"> Option 1</label>
-        <label><input type="radio" name="radio" value="2"> Option 2</label>
-        <label><input type="radio" name="radio" value="3"> Option 3</label>
+        <label for="radio-1"><input type="radio" name="radio" id="radio-1" value="1"> Option 1</label>
+        <label for="radio-2"><input type="radio" name="radio" id="radio-2" value="2"> Option 2</label>
+        <label for="radio-3"><input type="radio" name="radio" id="radio-3" value="3"> Option 3</label>
         <div class="other-radio">
-          <label><input type="radio" name="radio" value="other"> Other</label>
+          <label for="radio-other"><input type="radio" name="radio" id="radio-other" value="other"> Other</label>
           <form-required-if conditions="radio=other">
-            <label class="dependent"><span hidden>Other value</span>
-              <input name="radio-other">
+            <label for="radio-other-val" class="dependent"><span hidden>Other value</span>
+              <input name="radio-other" id="radio-other-val">
             </label>
           </form-required-if>
         </div>
@@ -125,14 +125,14 @@
 
       <fieldset>
         <legend>Choose an option</legend>
-        <label><input type="checkbox" name="checkbox[]" value="1"> Option 1</label>
-        <label><input type="checkbox" name="checkbox[]" value="2"> Option 2</label>
-        <label><input type="checkbox" name="checkbox[]" value="3"> Option 3</label>
+        <label for="checkbox-1"><input type="checkbox" name="checkbox[]" id="checkbox-1" value="1"> Option 1</label>
+        <label for="checkbox-2"><input type="checkbox" name="checkbox[]" id="checkbox-2" value="2"> Option 2</label>
+        <label for="checkbox-3"><input type="checkbox" name="checkbox[]" id="checkbox-3" value="3"> Option 3</label>
         <div class="other-checkbox">
-          <label><input type="checkbox" name="checkbox[]" value="other"> Other</label>
+          <label for="checkbox-other"><input type="checkbox" name="checkbox[]" id="checkbox-other" value="other"> Other</label>
           <form-required-if conditions="checkbox[]=other">
-            <label class="dependent"><span hidden>Other value</span>
-              <input name="checkbox-other">
+            <label for="checkbox-other-val" class="dependent"><span hidden>Other value</span>
+              <input name="checkbox-other" id="checkbox-other-val">
             </label>
           </form-required-if>
         </div>
