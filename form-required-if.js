@@ -1,18 +1,20 @@
 class FormRequiredIfElement extends HTMLElement {
 	connectedCallback() {
-		this.__$field = this.querySelector("input:not([type=submit],[type=image],[type=button]),select,textarea");
-		this.__$form = this.closest("form");
-		this.__is_required = false;
+    setTimeout(()=>{
+      this.__$field = this.querySelector("input:not([type=submit],[type=image],[type=button]),select,textarea");
+      this.__$form = this.closest("form");
+      this.__is_required = false;
 
-		this.__conditions = this.getAttribute("conditions").split("||");
-		this.__$fields = {};
-		
-		this.__indicator = this.getAttribute("indicator");
-		this.__indicator_position = this.getAttribute("indicator-position");
-		this.__$indicator = null;
-		this.__$indicator_placeholder = null;
-		
-		this.__init();
+      this.__conditions = this.getAttribute("conditions").split("||");
+      this.__$fields = {};
+      
+      this.__indicator = this.getAttribute("indicator");
+      this.__indicator_position = this.getAttribute("indicator-position");
+      this.__$indicator = null;
+      this.__$indicator_placeholder = null;
+      
+      this.__init();
+    });
 	}
 
 	__addObservers() {
