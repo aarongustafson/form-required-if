@@ -18,6 +18,13 @@ export class FormRequiredIfElement extends HTMLElement {
 	}
 
 	__addObservers() {
+		const reset = () => {
+			setTimeout(
+				this.__checkIfRequired.bind(this),
+				100
+			);
+		};
+		this.__$form.addEventListener("reset", reset.bind(this), false);
 		this.__$form.addEventListener("change", this.__checkIfRequired.bind(this), false);
 		this.__$form.addEventListener("keyup", this.__checkIfRequired.bind(this), false);
 	}
