@@ -1,8 +1,29 @@
 {
 	"name": "@aarongustafson/form-required-if",
 	"version": "1.1.0",
-	"type": "module",
 	"description": "Web component that enables fields to be required based on the value(s) of other fields.",
+	"keywords": [
+		"html",
+		"custom element",
+		"web component",
+		"forms",
+		"form validation",
+		"conditional required",
+		"required fields",
+		"accessibility",
+		"a11y"
+	],
+	"author": "Aaron Gustafson <aaron@easy-designs.net> (https://www.aaron-gustafson.com/)",
+	"license": "MIT",
+	"homepage": "https://github.com/aarongustafson/form-required-if#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/aarongustafson/form-required-if.git"
+	},
+	"bugs": {
+		"url": "https://github.com/aarongustafson/form-required-if/issues"
+	},
+	"type": "module",
 	"main": "index.js",
 	"module": "form-required-if.js",
 	"customElements": "custom-elements.json",
@@ -18,8 +39,16 @@
 		},
 		"./custom-elements.json": "./custom-elements.json"
 	},
-	"publishConfig": {
-		"access": "public"
+	"files": [
+		"form-required-if.js",
+		"define.js",
+		"index.js",
+		"custom-elements.json",
+		"README.md",
+		"LICENSE"
+	],
+	"engines": {
+		"node": ">=14.0.0"
 	},
 	"scripts": {
 		"test": "vitest",
@@ -33,16 +62,6 @@
 		"lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
 		"format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/aarongustafson/form-required-if.git"
-	},
-	"author": "Aaron Gustafson <aaron@easy-designs.net> (https://www.aaron-gustafson.com/)",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/aarongustafson/form-required-if/issues"
-	},
-	"homepage": "https://github.com/aarongustafson/form-required-if#readme",
 	"devDependencies": {
 		"@open-wc/eslint-config": "^13.0.0",
 		"@testing-library/dom": "^10.4.1",
@@ -54,26 +73,7 @@
 		"prettier": "^3.6.2",
 		"vitest": "^4.0.10"
 	},
-	"keywords": [
-		"html",
-		"custom element",
-		"web component",
-		"forms",
-		"form validation",
-		"conditional required",
-		"required fields",
-		"accessibility",
-		"a11y"
-	],
-	"files": [
-		"form-required-if.js",
-		"define.js",
-		"index.js",
-		"custom-elements.json",
-		"README.md",
-		"LICENSE"
-	],
-	"engines": {
-		"node": ">=14.0.0"
+	"publishConfig": {
+		"access": "public"
 	}
 }
