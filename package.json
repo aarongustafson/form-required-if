@@ -22,6 +22,8 @@
 	},
 	"homepage": "https://github.com/aarongustafson/form-required-if#readme",
 	"devDependencies": {
+		"@open-wc/eslint-config": "^13.0.0",
+		"eslint": "^9.39.1",
 		"prettier": "^3.3.2"
 	},
 	"keywords": [
