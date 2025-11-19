@@ -6,6 +6,18 @@
 	"main": "index.js",
 	"module": "form-required-if.js",
 	"customElements": "custom-elements.json",
+	"exports": {
+		".": {
+			"import": "./index.js"
+		},
+		"./form-required-if.js": {
+			"import": "./form-required-if.js"
+		},
+		"./define.js": {
+			"import": "./define.js"
+		},
+		"./custom-elements.json": "./custom-elements.json"
+	},
 	"publishConfig": {
 		"access": "public"
 	},
@@ -38,13 +50,30 @@
 		"@vitest/ui": "^4.0.10",
 		"eslint": "^9.39.1",
 		"eslint-config-prettier": "^10.1.8",
-		"happy-dom": "^15.11.7",
+		"happy-dom": "^20.0.10",
 		"prettier": "^3.6.2",
 		"vitest": "^4.0.10"
 	},
 	"keywords": [
 		"html",
 		"custom element",
-		"forms"
-	]
+		"web component",
+		"forms",
+		"form validation",
+		"conditional required",
+		"required fields",
+		"accessibility",
+		"a11y"
+	],
+	"files": [
+		"form-required-if.js",
+		"define.js",
+		"index.js",
+		"custom-elements.json",
+		"README.md",
+		"LICENSE"
+	],
+	"engines": {
+		"node": ">=14.0.0"
+	}
 }
