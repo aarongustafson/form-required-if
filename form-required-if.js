@@ -1,4 +1,4 @@
-class FormRequiredIfElement extends HTMLElement {
+export class FormRequiredIfElement extends HTMLElement {
 	connectedCallback() {
     setTimeout(()=>{
       this.__$field = this.querySelector("input:not([type=submit],[type=image],[type=button]),select,textarea");
@@ -210,8 +210,4 @@ class FormRequiredIfElement extends HTMLElement {
 		this.__prepareIndicator();
 		this.__checkIfRequired();
 	}
-}
-
-if( !!customElements ) {
-	customElements.define("form-required-if", FormRequiredIfElement);
-}
+};

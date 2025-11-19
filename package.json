@@ -3,8 +3,8 @@
 	"version": "1.1.0",
 	"type": "module",
 	"description": "Web component that enables fields to be required based on the value(s) of other fields.",
-	"main": "form-required-if.js",
-	"module": "form-required-if.module.js",
+	"main": "define.js",
+	"module": "form-required-if.js",
 	"customElements": "custom-elements.json",
 	"publishConfig": {
 		"access": "public"
