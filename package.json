@@ -1,6 +1,7 @@
 {
 	"name": "@aarongustafson/form-required-if",
 	"version": "1.1.0",
+	"type": "module",
 	"description": "Web component that enables fields to be required based on the value(s) of other fields.",
 	"main": "form-required-if.js",
 	"module": "form-required-if.module.js",
@@ -11,8 +12,8 @@
 	"scripts": {
 		"lint": "npm run lint:eslint && npm run lint:prettier",
 		"format": "npm run format:eslint && npm run format:prettier",
-		"lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
-		"format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
+		"lint:eslint": "eslint .",
+		"format:eslint": "eslint . --fix",
 		"lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
 		"format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore"
 	},
@@ -36,10 +37,5 @@
 		"html",
 		"custom element",
 		"forms"
-	],
-	"eslintConfig": {
-		"extends": [
-			"@open-wc/eslint-config"
-		]
-	}
+	]
 }
