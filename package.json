@@ -9,7 +9,12 @@
 		"access": "public"
 	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"lint": "npm run lint:eslint && npm run lint:prettier",
+		"format": "npm run format:eslint && npm run format:prettier",
+		"lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
+		"format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
+		"lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
+		"format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore"
 	},
 	"repository": {
 		"type": "git",
