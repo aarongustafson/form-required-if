@@ -5,4 +5,9 @@ export default [
 	{
 		ignores: ['node_modules/**', 'package-lock.json'],
 	},
+	{
+		rules: {
+			'arrow-parens': ['error', 'always'],
+		},
+	},
 ];
