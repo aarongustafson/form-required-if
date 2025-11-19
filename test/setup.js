@@ -6,4 +6,7 @@ beforeAll(() => {
 	if (!customElements.get('form-required-if')) {
 		customElements.define('form-required-if', FormRequiredIfElement);
 	}
+
+	// Make the class available globally for testing static methods
+	globalThis.FormRequiredIfElement = FormRequiredIfElement;
 });

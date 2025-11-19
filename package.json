@@ -10,6 +10,10 @@
 		"access": "public"
 	},
 	"scripts": {
+		"test": "vitest",
+		"test:ui": "vitest --ui",
+		"test:run": "vitest run",
+		"test:coverage": "vitest run --coverage",
 		"lint": "npm run lint:eslint && npm run lint:prettier",
 		"format": "npm run format:eslint && npm run format:prettier",
 		"lint:eslint": "eslint .",
@@ -34,7 +38,7 @@
 		"@vitest/ui": "^4.0.10",
 		"eslint": "^9.39.1",
 		"eslint-config-prettier": "^10.1.8",
-		"jsdom": "^27.0.1",
+		"happy-dom": "^15.11.7",
 		"prettier": "^3.6.2",
 		"vitest": "^4.0.10"
 	},
