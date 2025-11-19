@@ -36,5 +36,10 @@
 		"html",
 		"custom element",
 		"forms"
-	]
+	],
+	"eslintConfig": {
+		"extends": [
+			"@open-wc/eslint-config"
+		]
+	}
 }
