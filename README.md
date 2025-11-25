@@ -128,7 +128,7 @@ This web component assumes the fields you reference in `conditions` exist in the
 
 ## Demo
 
-[Live Demo](https://aarongustafson.github.io/form-required-if/demo.html) ([Source](./demo.html))
+[Live Demo](https://aarongustafson.github.io/form-required-if/demo/) ([Source](./demo/index.html))
 
 ## Browser Support
 
