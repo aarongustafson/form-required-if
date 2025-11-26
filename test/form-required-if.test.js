@@ -364,6 +364,40 @@ describe('FormRequiredIfElement', () => {
 			expect(result).toEqual(['a', 'c']);
 		});
 
+		it('should get current value for single checkbox when checked', () => {
+			const form = createForm(`
+				<input type="checkbox" name="test" value="yes">
+			`);
+
+			const checkbox = form.querySelector('[name="test"]');
+
+			// Unchecked
+			expect(FormRequiredIfElement.__getCurrentValue(checkbox)).toBe('');
+
+			// Checked
+			checkbox.checked = true;
+			expect(FormRequiredIfElement.__getCurrentValue(checkbox)).toBe(
+				'yes',
+			);
+		});
+
+		it('should get current value for single checkbox with default "on" value', () => {
+			const form = createForm(`
+				<input type="checkbox" name="test">
+			`);
+
+			const checkbox = form.querySelector('[name="test"]');
+
+			// Unchecked
+			expect(FormRequiredIfElement.__getCurrentValue(checkbox)).toBe('');
+
+			// Checked (browsers default to "on")
+			checkbox.checked = true;
+			expect(FormRequiredIfElement.__getCurrentValue(checkbox)).toBe(
+				'on',
+			);
+		});
+
 		it('should match values correctly', () => {
 			const { __valuesMatch } = FormRequiredIfElement;
 
@@ -378,6 +412,91 @@ describe('FormRequiredIfElement', () => {
 			// Array match (checkboxes)
 			expect(__valuesMatch('value1', ['value1', 'value2'])).toBe(true);
 			expect(__valuesMatch('value3', ['value1', 'value2'])).toBe(false);
+		});
+	});
+
+	describe('Checkbox handling', () => {
+		it('should not make field required when single checkbox is unchecked', async () => {
+			const form = createForm(`
+				<input type="checkbox" name="enable" value="yes">
+				<form-required-if conditions="enable=yes">
+					<label for="dependent">Dependent field</label>
+					<input type="text" id="dependent" name="dependent">
+				</form-required-if>
+			`);
+
+			await waitFor(() => {
+				const dependentField = form.querySelector('[name="dependent"]');
+				expect(dependentField.required).toBe(false);
+			});
+		});
+
+		it('should make field required when single checkbox is checked', async () => {
+			const form = createForm(`
+				<input type="checkbox" name="enable" value="yes">
+				<form-required-if conditions="enable=yes">
+					<label for="dependent">Dependent field</label>
+					<input type="text" id="dependent" name="dependent">
+				</form-required-if>
+			`);
+
+			const checkbox = form.querySelector('[name="enable"]');
+			const dependentField = form.querySelector('[name="dependent"]');
+
+			await user.click(checkbox);
+
+			await waitFor(() => {
+				expect(dependentField.required).toBe(true);
+			});
+		});
+
+		it('should make field optional when single checkbox is unchecked after being checked', async () => {
+			const form = createForm(`
+				<input type="checkbox" name="enable" value="yes">
+				<form-required-if conditions="enable=yes">
+					<label for="dependent">Dependent field</label>
+					<input type="text" id="dependent" name="dependent">
+				</form-required-if>
+			`);
+
+			const checkbox = form.querySelector('[name="enable"]');
+			const dependentField = form.querySelector('[name="dependent"]');
+
+			// Check the checkbox
+			await user.click(checkbox);
+			await waitFor(() => {
+				expect(dependentField.required).toBe(true);
+			});
+
+			// Uncheck the checkbox
+			await user.click(checkbox);
+			await waitFor(() => {
+				expect(dependentField.required).toBe(false);
+			});
+		});
+
+		it('should handle single checkbox with default "on" value', async () => {
+			const form = createForm(`
+				<input type="checkbox" name="enable">
+				<form-required-if conditions="enable=on">
+					<label for="dependent">Dependent field</label>
+					<input type="text" id="dependent" name="dependent">
+				</form-required-if>
+			`);
+
+			const checkbox = form.querySelector('[name="enable"]');
+			const dependentField = form.querySelector('[name="dependent"]');
+
+			// Initially unchecked
+			await waitFor(() => {
+				expect(dependentField.required).toBe(false);
+			});
+
+			// Check the checkbox
+			await user.click(checkbox);
+			await waitFor(() => {
+				expect(dependentField.required).toBe(true);
+			});
 		});
 	});
 });
