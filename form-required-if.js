@@ -195,7 +195,17 @@ export class FormRequiredIfElement extends HTMLElement {
 	}
 
 	static __getCurrentValue($field) {
-		// Checkboxes are special
+		// Single checkbox
+		if ($field.type === 'checkbox' && !$field.length) {
+			// Only return the value if the checkbox is actually checked
+			if ($field.checked) {
+				// Return the value, defaulting to "on" if not explicitly set
+				return $field.value || 'on';
+			}
+			return '';
+		}
+
+		// Checkbox array (multiple checkboxes with same name)
 		if ($field.length && $field[0].type && $field[0].type == 'checkbox') {
 			let value = [];
 			let length = $field.length;
@@ -208,6 +218,8 @@ export class FormRequiredIfElement extends HTMLElement {
 			value.reverse();
 			return value;
 		}
+
+		// Radio buttons and other inputs
 		return $field.value;
 	}
 
