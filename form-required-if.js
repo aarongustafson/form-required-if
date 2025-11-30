@@ -1,39 +1,76 @@
 export class FormRequiredIfElement extends HTMLElement {
 	connectedCallback() {
-		setTimeout(() => {
+		// Use requestAnimationFrame for better performance than setTimeout
+		requestAnimationFrame(() => {
 			this.__$field = this.querySelector(
 				'input:not([type=submit],[type=image],[type=button]),select,textarea',
 			);
 			this.__$form = this.closest('form');
 			this.__is_required = false;
 
-			this.__conditions = this.getAttribute('conditions').split('||');
+			// Cache parsed conditions instead of splitting on every check
+			const conditionsAttr = this.getAttribute('conditions');
+			this.__conditions = conditionsAttr
+				? conditionsAttr.split('||').map((condition) => {
+						const [name, value] = condition.split('=');
+						return { name: name.trim(), value: value.trim() };
+					})
+				: [];
 			this.__$fields = {};
 
+			// Cache attributes
 			this.__indicator = this.getAttribute('indicator');
-			this.__indicator_position = this.getAttribute('indicator-position');
+			this.__indicator_position =
+				this.getAttribute('indicator-position') || 'after';
 			this.__$indicator = null;
 			this.__$indicator_placeholder = null;
+
+			// Bind methods once for reuse
+			this.__boundCheckIfRequired = this.__checkIfRequired.bind(this);
+			this.__boundResetHandler = this.__handleReset.bind(this);
 
 			this.__init();
 		});
 	}
 
 	__addObservers() {
-		const reset = () => {
-			setTimeout(this.__checkIfRequired.bind(this), 100);
-		};
-		this.__$form.addEventListener('reset', reset.bind(this), false);
+		this.__$form.addEventListener('reset', this.__boundResetHandler, false);
 		this.__$form.addEventListener(
 			'change',
-			this.__checkIfRequired.bind(this),
+			this.__boundCheckIfRequired,
 			false,
 		);
 		this.__$form.addEventListener(
-			'keyup',
-			this.__checkIfRequired.bind(this),
+			'input',
+			this.__boundCheckIfRequired,
 			false,
 		);
+	}
+
+	__handleReset() {
+		// Use requestAnimationFrame instead of setTimeout for better performance
+		requestAnimationFrame(this.__boundCheckIfRequired);
+	}
+
+	disconnectedCallback() {
+		// Clean up event listeners when component is removed
+		if (this.__$form) {
+			this.__$form.removeEventListener(
+				'reset',
+				this.__boundResetHandler,
+				false,
+			);
+			this.__$form.removeEventListener(
+				'change',
+				this.__boundCheckIfRequired,
+				false,
+			);
+			this.__$form.removeEventListener(
+				'input',
+				this.__boundCheckIfRequired,
+				false,
+			);
+		}
 	}
 
 	__toggleIndicator() {
@@ -54,27 +91,25 @@ export class FormRequiredIfElement extends HTMLElement {
 			return;
 		}
 
-		if (!this.__indicator_position) {
-			this.__indicator_position = 'after';
-		}
-
 		const $label = this.querySelector('label');
 		const [$label_start, $label_end] =
 			FormRequiredIfElement.__getLabelBoundaries($label);
 		FormRequiredIfElement.__trimTextNodes($label);
 
-		if (this.__indicator.indexOf('<') !== 0) {
+		// Check if indicator is HTML (starts with '<')
+		if (this.__indicator.charCodeAt(0) !== 60) {
+			// 60 is '<'
 			this.__$indicator = document.createElement('span');
 			this.__$indicator.innerHTML = this.__indicator;
 		} else {
-			let $template = document.createElement('template');
+			const $template = document.createElement('template');
 			$template.innerHTML = this.__indicator;
 			this.__$indicator = $template.content.firstElementChild;
 		}
 
 		this.__toggleIndicator();
 
-		if (this.__indicator_position == 'after') {
+		if (this.__indicator_position === 'after') {
 			if ($label_end.nextSibling) {
 				$label.insertBefore(this.__$indicator, $label_end.nextSibling);
 			} else {
@@ -101,25 +136,32 @@ export class FormRequiredIfElement extends HTMLElement {
 
 	__checkIfRequired() {
 		let should_be_required = false;
-		let test_conditions = this.__conditions;
-		test_conditions.forEach((condition) => {
-			const [name, value] = condition.split('=');
+
+		// Use for loop instead of forEach for better performance
+		// Can break early when condition is met
+		for (let i = 0; i < this.__conditions.length; i++) {
+			const { name, value } = this.__conditions[i];
 
 			const $field = this.__$form.elements[name];
 			if (!$field) {
-				return;
+				continue;
 			}
 
 			const current_value =
 				FormRequiredIfElement.__getCurrentValue($field);
 			if (FormRequiredIfElement.__valuesMatch(value, current_value)) {
 				should_be_required = true;
+				break; // Early exit - OR logic means we're done
 			}
-		});
-		if (should_be_required && !this.__is_required) {
-			this.__makeFieldRequired();
-		} else if (!should_be_required && this.__is_required) {
-			this.__makeFieldOptional();
+		}
+
+		// Only update if state changed
+		if (should_be_required !== this.__is_required) {
+			if (should_be_required) {
+				this.__makeFieldRequired();
+			} else {
+				this.__makeFieldOptional();
+			}
 		}
 	}
 
@@ -136,10 +178,14 @@ export class FormRequiredIfElement extends HTMLElement {
 		let $last_child = $label.lastChild;
 		const contains_field = $label.matches(':has(input,select,textarea)');
 
+		// Use Node constants for better performance
+		const TEXT_NODE = 3;
+		const ELEMENT_NODE = 1;
+
 		// skip empty text nodes
 		while (
-			$first_child.nodeType == 3 &&
-			$first_child.textContent.trim() == ''
+			$first_child.nodeType === TEXT_NODE &&
+			$first_child.textContent.trim() === ''
 		) {
 			if ($first_child.nextSibling) {
 				$first_child = $first_child.nextSibling;
@@ -148,8 +194,8 @@ export class FormRequiredIfElement extends HTMLElement {
 			}
 		}
 		while (
-			$last_child.nodeType == 3 &&
-			$last_child.textContent.trim() == ''
+			$last_child.nodeType === TEXT_NODE &&
+			$last_child.textContent.trim() === ''
 		) {
 			if ($last_child.previousSibling) {
 				$last_child = $last_child.previousSibling;
@@ -162,7 +208,7 @@ export class FormRequiredIfElement extends HTMLElement {
 		if (contains_field) {
 			// field comes first
 			if (
-				$first_child.nodeType == '1' &&
+				$first_child.nodeType === ELEMENT_NODE &&
 				$first_child.matches('input,select,textarea') &&
 				$first_child.nextSibling
 			) {
@@ -170,12 +216,18 @@ export class FormRequiredIfElement extends HTMLElement {
 			}
 			// field comes somewhere in the middle
 			else {
-				let $field = [...$children].find(($child) => {
-					return (
-						$child.nodeType == '1' &&
+				// Use traditional for loop instead of spread + find for better performance
+				let $field = null;
+				for (let i = 0; i < $children.length; i++) {
+					const $child = $children[i];
+					if (
+						$child.nodeType === ELEMENT_NODE &&
 						$child.matches('input,select,textarea')
-					);
-				});
+					) {
+						$field = $child;
+						break;
+					}
+				}
 				if ($field) {
 					$last_child = $field.previousSibling
 						? $field.previousSibling
@@ -187,11 +239,18 @@ export class FormRequiredIfElement extends HTMLElement {
 	}
 
 	static __trimTextNodes($label) {
-		[...$label.childNodes].forEach(($node) => {
-			if ($node.nodeType == 3 && $node.textContent.trim() != '') {
+		const TEXT_NODE = 3;
+		const $children = $label.childNodes;
+		// Use traditional for loop instead of spread + forEach
+		for (let i = 0; i < $children.length; i++) {
+			const $node = $children[i];
+			if (
+				$node.nodeType === TEXT_NODE &&
+				$node.textContent.trim() !== ''
+			) {
 				$node.textContent = $node.textContent.trim();
 			}
-		});
+		}
 	}
 
 	static __getCurrentValue($field) {
@@ -206,16 +265,15 @@ export class FormRequiredIfElement extends HTMLElement {
 		}
 
 		// Checkbox array (multiple checkboxes with same name)
-		if ($field.length && $field[0].type && $field[0].type == 'checkbox') {
-			let value = [];
-			let length = $field.length;
-			while (length--) {
-				let $current_field = $field[length];
+		if ($field.length && $field[0].type && $field[0].type === 'checkbox') {
+			const value = [];
+			// Use forward loop to avoid reverse() call
+			for (let i = 0; i < $field.length; i++) {
+				const $current_field = $field[i];
 				if ($current_field.checked) {
 					value.push($current_field.value);
 				}
 			}
-			value.reverse();
 			return value;
 		}
 
@@ -224,22 +282,22 @@ export class FormRequiredIfElement extends HTMLElement {
 	}
 
 	static __valuesMatch(condition_value, current_value) {
-		let match = false;
-
-		// precise match
-		if (condition_value == current_value) {
-			match = true;
-		} else if (condition_value == '*' && current_value != '') {
-			// Anything
-			match = true;
-		} else if (
-			current_value instanceof Array &&
-			current_value.includes(condition_value)
-		) {
-			// Checkboxes
-			match = true;
+		// Use strict equality and early returns for better performance
+		if (condition_value === current_value) {
+			return true;
 		}
 
-		return match;
+		if (condition_value === '*' && current_value !== '') {
+			return true;
+		}
+
+		if (
+			Array.isArray(current_value) &&
+			current_value.includes(condition_value)
+		) {
+			return true;
+		}
+
+		return false;
 	}
 }
