@@ -1,6 +1,12 @@
 # Required If Web Component
 
+[![npm version](https://img.shields.io/npm/v/@aarongustafson/form-required-if.svg)](https://www.npmjs.com/package/@aarongustafson/form-required-if) [![Build Status](https://img.shields.io/github/actions/workflow/status/aarongustafson/form-required-if/ci.yml?branch=main)](https://github.com/aarongustafson/form-required-if/actions)
+
 Currently, HTML only supports making a field required or optional. Sometimes you need a field to be required only when certain other fields have a (particular) value. The `form-required-if` web component enables that.
+
+## Demo
+
+[Live Demo](https://aarongustafson.github.io/form-required-if/demo/) ([Source](./demo/index.html))
 
 ## Installation
 
@@ -125,10 +131,6 @@ This web component assumes the fields you reference in `conditions` exist in the
   <input type="tel" id="phone" name="phone">
 </form-required-if>
 ```
-
-## Demo
-
-[Live Demo](https://aarongustafson.github.io/form-required-if/demo/) ([Source](./demo/index.html))
 
 ## Browser Support
 
