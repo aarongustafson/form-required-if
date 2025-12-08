@@ -16,26 +16,12 @@ npm install @aarongustafson/form-required-if
 
 ## Usage
 
-### Option 1: Auto-define the custom element (easiest)
-
-Import the package to automatically define the `<form-required-if>` custom element:
-
-```javascript
-import '@aarongustafson/form-required-if';
-```
-
-Or use the define-only script in HTML:
-
-```html
-<script src="./node_modules/@aarongustafson/form-required-if/define.js" type="module"></script>
-```
-
-### Option 2: Import the class and define manually
+### Option 1: Import the class and define manually
 
 Import the class and define the custom element with your preferred tag name:
 
 ```javascript
-import { FormRequiredIfElement } from '@aarongustafson/form-required-if/form-required-if.js';
+import { FormRequiredIfElement } from '@aarongustafson/form-required-if';
 
 // Define with default name
 customElements.define('form-required-if', FormRequiredIfElement);
@@ -44,13 +30,26 @@ customElements.define('form-required-if', FormRequiredIfElement);
 customElements.define('my-conditional-required', FormRequiredIfElement);
 ```
 
-### Option 3: Import everything (class + auto-define)
+### Option 2: Auto-define the custom element (browser environments only)
 
-Get both the class export and automatic element definition:
+Use the guarded definition helper to register the element when `customElements` is available:
 
 ```javascript
-import { FormRequiredIfElement } from '@aarongustafson/form-required-if';
-// The custom element is now defined AND you have access to the class
+import '@aarongustafson/form-required-if/define.js';
+```
+
+If you prefer to control when the element is registered, call the helper directly:
+
+```javascript
+import { defineFormRequiredIf } from '@aarongustafson/form-required-if/define.js';
+
+defineFormRequiredIf();
+```
+
+You can also include the guarded script from HTML:
+
+```html
+<script src="./node_modules/@aarongustafson/form-required-if/define.js" type="module"></script>
 ```
 
 ### CDN Usage
@@ -58,7 +57,7 @@ import { FormRequiredIfElement } from '@aarongustafson/form-required-if';
 You can also use the component directly from a CDN:
 
 ```html
-<script src="https://unpkg.com/@aarongustafson/form-required-if/define.js" type="module"></script>
+<script src="https://unpkg.com/@aarongustafson/form-required-if@latest/define.js" type="module"></script>
 ```
 
 ## API
