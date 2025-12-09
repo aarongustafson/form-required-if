@@ -4,9 +4,11 @@
 
 Currently, HTML only supports making a field required or optional. Sometimes you need a field to be required only when certain other fields have a (particular) value. The `form-required-if` web component enables that.
 
-## Demo
+## Demos
 
-[Live Demo](https://aarongustafson.github.io/form-required-if/demo/) ([Source](./demo/index.html))
+- [Comprehensive Demo](https://aarongustafson.github.io/form-required-if/demo/) ([Source](./demo/index.html))
+- [ESM.sh CDN Demo](https://aarongustafson.github.io/form-required-if/demo/esm.html) ([Source](./demo/esm.html))
+- [unpkg CDN Demo](https://aarongustafson.github.io/form-required-if/demo/unpkg.html) ([Source](./demo/unpkg.html))
 
 ## Installation
 
