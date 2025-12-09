@@ -499,4 +499,94 @@ describe('FormRequiredIfElement', () => {
 			});
 		});
 	});
+
+	describe('Fallback to document.body', () => {
+		it('should work without a form wrapper by falling back to document.body', async () => {
+			// Create elements without a form wrapper
+			container.innerHTML = `
+				<input type="email" name="email-no-form" value="">
+				<form-required-if conditions="email-no-form=*">
+					<label for="test-no-form">Test field</label>
+					<input type="text" id="test-no-form" name="test-no-form">
+				</form-required-if>
+			`;
+
+			const component = container.querySelector('form-required-if');
+			const emailField = container.querySelector('[name="email-no-form"]');
+			const testField = container.querySelector('[name="test-no-form"]');
+
+			// Wait for component initialization
+			await new Promise((resolve) => setTimeout(resolve, 10));
+
+			// Should fall back to document.body when no form is found
+			expect(component.__$form).toBe(document.body);
+
+			// Initially should not be required
+			expect(testField.required).toBe(false);
+
+			// Add value to email field to trigger condition
+			await user.type(emailField, 'test@example.com');
+			fireEvent.change(emailField);
+
+			// Wait for the component to process the change
+			await waitFor(() => {
+				expect(testField.required).toBe(true);
+			});
+
+			// Clear email field
+			await user.clear(emailField);
+			fireEvent.change(emailField);
+
+			// Should become optional again
+			await waitFor(() => {
+				expect(testField.required).toBe(false);
+			});
+		});
+
+		it('should handle field lookup without form.elements', async () => {
+			// Create elements without a form wrapper
+			container.innerHTML = `
+				<select name="contact-method-no-form">
+					<option value="">Select one</option>
+					<option value="email">Email</option>
+					<option value="phone">Phone</option>
+				</select>
+				<form-required-if conditions="contact-method-no-form=email">
+					<label for="email-no-form">Email Address</label>
+					<input type="email" id="email-no-form" name="email-no-form">
+				</form-required-if>
+			`;
+
+			const component = container.querySelector('form-required-if');
+			const selectField = container.querySelector('[name="contact-method-no-form"]');
+			const emailField = container.querySelector('[name="email-no-form"]');
+
+			// Wait for component initialization
+			await new Promise((resolve) => setTimeout(resolve, 10));
+
+			// Should fall back to document.body
+			expect(component.__$form).toBe(document.body);
+
+			// Initially should not be required
+			expect(emailField.required).toBe(false);
+
+			// Select email option
+			await user.selectOptions(selectField, 'email');
+			fireEvent.change(selectField);
+
+			// Should become required
+			await waitFor(() => {
+				expect(emailField.required).toBe(true);
+			});
+
+			// Select phone option
+			await user.selectOptions(selectField, 'phone');
+			fireEvent.change(selectField);
+
+			// Should become optional again
+			await waitFor(() => {
+				expect(emailField.required).toBe(false);
+			});
+		});
+	});
 });
