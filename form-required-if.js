@@ -5,7 +5,7 @@ export class FormRequiredIfElement extends HTMLElement {
 			this.__$field = this.querySelector(
 				'input:not([type=submit],[type=image],[type=button]),select,textarea',
 			);
-			this.__$form = this.closest('form');
+			this.__$form = this.closest('form') || document.body;
 			this.__is_required = false;
 
 			// Cache parsed conditions instead of splitting on every check
@@ -142,7 +142,10 @@ export class FormRequiredIfElement extends HTMLElement {
 		for (let i = 0; i < this.__conditions.length; i++) {
 			const { name, value } = this.__conditions[i];
 
-			const $field = this.__$form.elements[name];
+			// If we have a form, use form.elements, otherwise query by name
+			const $field = this.__$form.elements
+				? this.__$form.elements[name]
+				: this.__$form.querySelector(`[name="${name}"]`);
 			if (!$field) {
 				continue;
 			}
