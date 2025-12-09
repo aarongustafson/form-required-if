@@ -512,7 +512,9 @@ describe('FormRequiredIfElement', () => {
 			`;
 
 			const component = container.querySelector('form-required-if');
-			const emailField = container.querySelector('[name="email-no-form"]');
+			const emailField = container.querySelector(
+				'[name="email-no-form"]',
+			);
 			const testField = container.querySelector('[name="test-no-form"]');
 
 			// Wait for component initialization
@@ -558,8 +560,12 @@ describe('FormRequiredIfElement', () => {
 			`;
 
 			const component = container.querySelector('form-required-if');
-			const selectField = container.querySelector('[name="contact-method-no-form"]');
-			const emailField = container.querySelector('[name="email-no-form"]');
+			const selectField = container.querySelector(
+				'[name="contact-method-no-form"]',
+			);
+			const emailField = container.querySelector(
+				'[name="email-no-form"]',
+			);
 
 			// Wait for component initialization
 			await new Promise((resolve) => setTimeout(resolve, 10));
