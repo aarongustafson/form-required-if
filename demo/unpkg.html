@@ -4,30 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>form-required-if via unpkg</title>
-		<style>
-			body {
-				font-family: system-ui, sans-serif;
-				margin: 2rem;
-				line-height: 1.5;
-			}
-
-			form-required-if {
-				display: block;
-				max-width: 480px;
-			}
-
-			label,
-			input {
-				display: block;
-				width: 100%;
-				font: inherit;
-			}
-
-			input {
-				margin-block: 0.5rem 1rem;
-				padding: 0.5rem;
-			}
-		</style>
+		<link rel="stylesheet" href="./styles.css" />
 	</head>
 	<body>
 		<h1>unpkg CDN sanity check</h1>
@@ -36,17 +13,19 @@
 			<code>unpkg</code> and registers the element when supported.
 		</p>
 
-		<label for="contact-method">Preferred contact method</label>
-		<select id="contact-method" name="contact-method">
-			<option value="">Select one</option>
-			<option value="email">Email</option>
-			<option value="phone">Phone</option>
-		</select>
+		<form>
+			<label for="contact-method">Preferred contact method</label>
+			<select id="contact-method" name="contact-method">
+				<option value="">Select one</option>
+				<option value="email">Email</option>
+				<option value="phone">Phone</option>
+			</select>
 
-		<form-required-if conditions="contact-method=email" indicator="*">
-			<label for="email">Email (required when email selected)</label>
-			<input type="email" id="email" name="email" />
-		</form-required-if>
+			<form-required-if conditions="contact-method=email" indicator="*">
+				<label for="email">Email (required when email selected)</label>
+				<input type="email" id="email" name="email" />
+			</form-required-if>
+		</form>
 
 		<script type="module">
 			import { defineFormRequiredIf } from 'https://unpkg.com/@aarongustafson/form-required-if@latest/define.js?module';
