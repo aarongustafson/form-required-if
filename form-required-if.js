@@ -3,15 +3,25 @@ export class FormRequiredIfElement extends HTMLElement {
 		return ['conditions', 'indicator', 'indicator-position'];
 	}
 
+	constructor() {
+		super();
+		this.__$field = null;
+		this.__$form = null;
+		this.__conditions = [];
+		this.__indicator = null;
+		this.__indicator_position = 'after';
+		this.__boundCheckIfRequired = null;
+		this.__boundResetHandler = null;
+	}
+
 	attributeChangedCallback(name, oldValue, newValue) {
 		if (oldValue === newValue) {
 			return;
 		}
 		switch (name) {
 			case 'conditions':
-				this.__conditions = FormRequiredIfElement.__parseConditions(
-					newValue,
-				);
+				this.__conditions =
+					FormRequiredIfElement.__parseConditions(newValue);
 				if (this.isConnected) {
 					this.__checkIfRequired();
 				}
@@ -63,7 +73,19 @@ export class FormRequiredIfElement extends HTMLElement {
 			this.setAttribute('indicator-position', value);
 		}
 	}
+
+	__upgradeProperty(prop) {
+		if (Object.prototype.hasOwnProperty.call(this, prop)) {
+			const value = this[prop];
+			delete this[prop];
+			this[prop] = value;
+		}
+	}
+
 	connectedCallback() {
+		this.__upgradeProperty('conditions');
+		this.__upgradeProperty('indicator');
+		this.__upgradeProperty('indicatorPosition');
 		// Use requestAnimationFrame for better performance than setTimeout
 		requestAnimationFrame(() => {
 			this.__$field = this.querySelector(
@@ -74,9 +96,8 @@ export class FormRequiredIfElement extends HTMLElement {
 
 			// Cache parsed conditions instead of splitting on every check
 			const conditionsAttr = this.conditions;
-			this.__conditions = FormRequiredIfElement.__parseConditions(
-				conditionsAttr,
-			);
+			this.__conditions =
+				FormRequiredIfElement.__parseConditions(conditionsAttr);
 			this.__$fields = {};
 
 			// Cache attributes
