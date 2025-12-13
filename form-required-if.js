@@ -1,4 +1,68 @@
 export class FormRequiredIfElement extends HTMLElement {
+	static get observedAttributes() {
+		return ['conditions', 'indicator', 'indicator-position'];
+	}
+
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (oldValue === newValue) {
+			return;
+		}
+		switch (name) {
+			case 'conditions':
+				this.__conditions = FormRequiredIfElement.__parseConditions(
+					newValue,
+				);
+				if (this.isConnected) {
+					this.__checkIfRequired();
+				}
+				break;
+			case 'indicator':
+				this.__indicator = newValue;
+				if (this.isConnected) {
+					this.__resetIndicator();
+				}
+				break;
+			case 'indicator-position':
+				this.__indicator_position = newValue || 'after';
+				if (this.isConnected) {
+					this.__resetIndicator();
+				}
+				break;
+		}
+	}
+
+	get conditions() {
+		return this.getAttribute('conditions');
+	}
+	set conditions(value) {
+		if (value === null || value === undefined) {
+			this.removeAttribute('conditions');
+		} else {
+			this.setAttribute('conditions', value);
+		}
+	}
+
+	get indicator() {
+		return this.getAttribute('indicator');
+	}
+	set indicator(value) {
+		if (value === null || value === undefined) {
+			this.removeAttribute('indicator');
+		} else {
+			this.setAttribute('indicator', value);
+		}
+	}
+
+	get indicatorPosition() {
+		return this.getAttribute('indicator-position');
+	}
+	set indicatorPosition(value) {
+		if (value === null || value === undefined) {
+			this.removeAttribute('indicator-position');
+		} else {
+			this.setAttribute('indicator-position', value);
+		}
+	}
 	connectedCallback() {
 		// Use requestAnimationFrame for better performance than setTimeout
 		requestAnimationFrame(() => {
@@ -9,19 +73,15 @@ export class FormRequiredIfElement extends HTMLElement {
 			this.__is_required = false;
 
 			// Cache parsed conditions instead of splitting on every check
-			const conditionsAttr = this.getAttribute('conditions');
-			this.__conditions = conditionsAttr
-				? conditionsAttr.split('||').map((condition) => {
-						const [name, value] = condition.split('=');
-						return { name: name.trim(), value: value.trim() };
-					})
-				: [];
+			const conditionsAttr = this.conditions;
+			this.__conditions = FormRequiredIfElement.__parseConditions(
+				conditionsAttr,
+			);
 			this.__$fields = {};
 
 			// Cache attributes
-			this.__indicator = this.getAttribute('indicator');
-			this.__indicator_position =
-				this.getAttribute('indicator-position') || 'after';
+			this.__indicator = this.indicator;
+			this.__indicator_position = this.indicatorPosition || 'after';
 			this.__$indicator = null;
 			this.__$indicator_placeholder = null;
 
@@ -118,6 +178,15 @@ export class FormRequiredIfElement extends HTMLElement {
 		} else {
 			$label.insertBefore(this.__$indicator, $label_start);
 		}
+	}
+
+	__resetIndicator() {
+		if (this.__$indicator && this.__$indicator.parentNode) {
+			this.__$indicator.parentNode.removeChild(this.__$indicator);
+		}
+		this.__$indicator = null;
+		this.__$indicator_placeholder = null;
+		this.__prepareIndicator();
 	}
 
 	__makeFieldRequired() {
@@ -302,5 +371,13 @@ export class FormRequiredIfElement extends HTMLElement {
 		}
 
 		return false;
+	}
+	static __parseConditions(conditionsAttr) {
+		return conditionsAttr
+			? conditionsAttr.split('||').map((condition) => {
+					const [name, value] = condition.split('=');
+					return { name: name.trim(), value: value.trim() };
+				})
+			: [];
 	}
 }
