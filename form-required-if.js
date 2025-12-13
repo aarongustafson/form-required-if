@@ -7,11 +7,13 @@ export class FormRequiredIfElement extends HTMLElement {
 		super();
 		this.__$field = null;
 		this.__$form = null;
+		this.__$fields = {};
 		this.__conditions = [];
 		this.__indicator = null;
 		this.__indicator_position = 'after';
 		this.__boundCheckIfRequired = null;
 		this.__boundResetHandler = null;
+		this.__rafId = null;
 	}
 
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -22,6 +24,7 @@ export class FormRequiredIfElement extends HTMLElement {
 			case 'conditions':
 				this.__conditions =
 					FormRequiredIfElement.__parseConditions(newValue);
+				this.__$fields = {};
 				if (this.isConnected) {
 					this.__checkIfRequired();
 				}
@@ -87,7 +90,8 @@ export class FormRequiredIfElement extends HTMLElement {
 		this.__upgradeProperty('indicator');
 		this.__upgradeProperty('indicatorPosition');
 		// Use requestAnimationFrame for better performance than setTimeout
-		requestAnimationFrame(() => {
+		this.__rafId = requestAnimationFrame(() => {
+			this.__rafId = null;
 			this.__$field = this.querySelector(
 				'input:not([type=submit],[type=image],[type=button]),select,textarea',
 			);
@@ -115,6 +119,9 @@ export class FormRequiredIfElement extends HTMLElement {
 	}
 
 	__addObservers() {
+		if (!this.__$form) {
+			return;
+		}
 		this.__$form.addEventListener('reset', this.__boundResetHandler, false);
 		this.__$form.addEventListener(
 			'change',
@@ -135,6 +142,13 @@ export class FormRequiredIfElement extends HTMLElement {
 
 	disconnectedCallback() {
 		// Clean up event listeners when component is removed
+		if (this.__rafId !== null) {
+			cancelAnimationFrame(this.__rafId);
+			this.__rafId = null;
+		}
+		if (this.__$indicator && this.__$indicator.parentNode) {
+			this.__$indicator.parentNode.removeChild(this.__$indicator);
+		}
 		if (this.__$form) {
 			this.__$form.removeEventListener(
 				'reset',
@@ -152,6 +166,9 @@ export class FormRequiredIfElement extends HTMLElement {
 				false,
 			);
 		}
+		this.__$field = null;
+		this.__$form = null;
+		this.__$fields = {};
 	}
 
 	__toggleIndicator() {
@@ -173,19 +190,28 @@ export class FormRequiredIfElement extends HTMLElement {
 		}
 
 		const $label = this.querySelector('label');
+		if (!$label) {
+			return;
+		}
 		const [$label_start, $label_end] =
 			FormRequiredIfElement.__getLabelBoundaries($label);
 		FormRequiredIfElement.__trimTextNodes($label);
 
+		const fragment = document.createDocumentFragment();
 		// Check if indicator is HTML (starts with '<')
 		if (this.__indicator.charCodeAt(0) !== 60) {
 			// 60 is '<'
-			this.__$indicator = document.createElement('span');
-			this.__$indicator.innerHTML = this.__indicator;
+			const $span = document.createElement('span');
+			$span.textContent = this.__indicator;
+			fragment.appendChild($span);
 		} else {
 			const $template = document.createElement('template');
 			$template.innerHTML = this.__indicator;
-			this.__$indicator = $template.content.firstElementChild;
+			fragment.appendChild($template.content.cloneNode(true));
+		}
+		this.__$indicator = fragment.firstElementChild;
+		if (!this.__$indicator) {
+			return;
 		}
 
 		this.__toggleIndicator();
@@ -233,9 +259,14 @@ export class FormRequiredIfElement extends HTMLElement {
 			const { name, value } = this.__conditions[i];
 
 			// If we have a form, use form.elements, otherwise query by name
-			const $field = this.__$form.elements
-				? this.__$form.elements[name]
-				: this.__$form.querySelector(`[name="${name}"]`);
+			let $field = this.__$fields[name];
+			if (!$field) {
+				$field = this.__$form?.elements?.[name] ||
+					this.__$form?.querySelector(`[name="${name}"]`);
+				if ($field) {
+					this.__$fields[name] = $field;
+				}
+			}
 			if (!$field) {
 				continue;
 			}
