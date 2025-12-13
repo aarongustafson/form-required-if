@@ -32,15 +32,18 @@
 			"import": "./index.js"
 		},
 		"./form-required-if.js": {
-			"import": "./form-required-if.js"
+			"import": "./form-required-if.js",
+			"types": "./form-required-if.d.ts"
 		},
 		"./define.js": {
 			"import": "./define.js"
 		},
 		"./custom-elements.json": "./custom-elements.json"
 	},
+	"types": "./form-required-if.d.ts",
 	"files": [
 		"form-required-if.js",
+		"form-required-if.d.ts",
 		"define.js",
 		"index.js",
 		"custom-elements.json",
