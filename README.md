@@ -4,6 +4,12 @@
 
 Currently, HTML only supports making a field required or optional. Sometimes you need a field to be required only when certain other fields have a (particular) value. The `form-required-if` web component enables that.
 
+## TypeScript & Framework Support
+
+- Ships with `.d.ts` definitions so editors and TypeScript builds get full type information for `FormRequiredIfElement`.
+- `conditions`, `indicator`, and `indicator-position` now reflect between properties and attributes, keeping frameworks in sync with DOM state.
+- `_upgradeProperty` ensures properties set before the element is defined are captured and reflected once connected.
+
 ## Demos
 
 - [Comprehensive Demo](https://aarongustafson.github.io/form-required-if/demo/) ([Source](./demo/index.html))
