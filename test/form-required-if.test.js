@@ -57,6 +57,111 @@ describe('FormRequiredIfElement', () => {
 		});
 	});
 
+	describe('Property reflection and upgrade', () => {
+		it('reflects properties to attributes', () => {
+			const component = document.createElement('form-required-if');
+			component.conditions = 'email=*';
+			component.indicator = '*';
+			component.indicatorPosition = 'before';
+
+			expect(component.getAttribute('conditions')).toBe('email=*');
+			expect(component.getAttribute('indicator')).toBe('*');
+			expect(component.getAttribute('indicator-position')).toBe('before');
+		});
+
+		it('exposes reflected attributes via properties', () => {
+			const component = document.createElement('form-required-if');
+			component.setAttribute('conditions', 'email=*');
+			component.setAttribute('indicator', '!');
+			component.setAttribute('indicator-position', 'after');
+
+			expect(component.conditions).toBe('email=*');
+			expect(component.indicator).toBe('!');
+			expect(component.indicatorPosition).toBe('after');
+		});
+
+		it('upgrades properties assigned before connection', async () => {
+			const form = createForm(`
+				<input type="email" name="email" value="">
+			`);
+			const component = document.createElement('form-required-if');
+			component.innerHTML = `
+				<label for="test-upgrade">Upgrade test</label>
+				<input type="text" id="test-upgrade" name="test-upgrade">
+			`;
+			Object.defineProperty(component, 'conditions', {
+				value: 'email=*',
+				configurable: true,
+				writable: true,
+			});
+			Object.defineProperty(component, 'indicator', {
+				value: '*',
+				configurable: true,
+				writable: true,
+			});
+			form.appendChild(component);
+
+			await waitFor(() => {
+				expect(component.getAttribute('conditions')).toBe('email=*');
+				expect(component.getAttribute('indicator')).toBe('*');
+			});
+		});
+	});
+
+	describe('Attribute reactions', () => {
+		it('recreates the indicator when the attribute changes', async () => {
+			const form = createForm(`
+				<input type="email" name="email" value="">
+				<form-required-if conditions="email=*">
+					<label for="indicator-test">Indicator test</label>
+					<input type="text" id="indicator-test" name="indicator-test">
+				</form-required-if>
+			`);
+
+			const component = form.querySelector('form-required-if');
+			const label = form.querySelector('label');
+
+			component.setAttribute('indicator', '*');
+			await waitFor(() => {
+				const indicator = label.querySelector('[aria-hidden]');
+				expect(indicator?.textContent).toContain('*');
+			});
+
+			component.setAttribute('indicator', '!');
+			await waitFor(() => {
+				const indicator = label.querySelector('[aria-hidden]');
+				expect(indicator?.textContent).toContain('!');
+			});
+		});
+
+		it('re-evaluates conditions when the attribute changes', async () => {
+			const form = createForm(`
+				<input type="email" name="email" value="">
+				<form-required-if conditions="email=special">
+					<label for="conditional">Conditional field</label>
+					<input type="text" id="conditional" name="conditional">
+				</form-required-if>
+			`);
+
+			const component = form.querySelector('form-required-if');
+			const emailField = form.querySelector('[name="email"]');
+			const dependentField = form.querySelector('[name="conditional"]');
+
+			await user.type(emailField, 'anything');
+			fireEvent.change(emailField);
+
+			await waitFor(() => {
+				expect(dependentField.required).toBe(false);
+			});
+
+			component.setAttribute('conditions', 'email=*');
+
+			await waitFor(() => {
+				expect(dependentField.required).toBe(true);
+			});
+		});
+	});
+
 	describe('Required state management', () => {
 		it('should make field required when condition is met', async () => {
 			const form = createForm(`
