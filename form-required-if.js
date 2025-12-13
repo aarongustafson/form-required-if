@@ -267,7 +267,8 @@ export class FormRequiredIfElement extends HTMLElement {
 			// If we have a form, use form.elements, otherwise query by name
 			let $field = this.__$fields[name];
 			if (!$field) {
-				$field = this.__$form?.elements?.[name] ||
+				$field =
+					this.__$form?.elements?.[name] ||
 					this.__$form?.querySelector(`[name="${name}"]`);
 				if ($field) {
 					this.__$fields[name] = $field;
