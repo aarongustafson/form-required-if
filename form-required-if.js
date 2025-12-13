@@ -25,19 +25,19 @@ export class FormRequiredIfElement extends HTMLElement {
 				this.__conditions =
 					FormRequiredIfElement.__parseConditions(newValue);
 				this.__$fields = {};
-				if (this.isConnected) {
+				if (this.isConnected && this.__$field) {
 					this.__checkIfRequired();
 				}
 				break;
 			case 'indicator':
 				this.__indicator = newValue;
-				if (this.isConnected) {
+				if (this.isConnected && this.__$field) {
 					this.__resetIndicator();
 				}
 				break;
 			case 'indicator-position':
 				this.__indicator_position = newValue || 'after';
-				if (this.isConnected) {
+				if (this.isConnected && this.__$field) {
 					this.__resetIndicator();
 				}
 				break;
@@ -237,6 +237,9 @@ export class FormRequiredIfElement extends HTMLElement {
 	}
 
 	__makeFieldRequired() {
+		if (!this.__$field) {
+			return;
+		}
 		this.__$field.required = true;
 		this.__$field.setAttribute('aria-required', 'true');
 		this.__toggleIndicator();
@@ -244,6 +247,9 @@ export class FormRequiredIfElement extends HTMLElement {
 	}
 
 	__makeFieldOptional() {
+		if (!this.__$field) {
+			return;
+		}
 		this.__$field.required = false;
 		this.__$field.removeAttribute('aria-required');
 		this.__toggleIndicator();
