@@ -7,12 +7,6 @@
 		<link rel="stylesheet" href="./styles.css" />
 		<style>
 			/* Demo-specific styles */
-			form-required-if:has([required]) label {
-				outline: 3px solid red;
-				outline-offset: 7px;
-				background: #f7d3d3;
-				color: #000;
-			}
 			form-required-if:defined label.dependent {
 				display: none;
 			}
@@ -29,14 +23,24 @@
 				based on the values of other fields. See the
 				<a href="../">README</a> for installation and API documentation.
 			</p>
-			<p>
-				<strong>Visual indicator:</strong> Labels containing required
-				fields get a red outline and pink background in these demos,
-				just to emphasize the field that’s changed.
-			</p>
 		</header>
 
 		<main>
+			<aside class="note enhancement-note">
+				<p><strong>Try the conditional fields</strong></p>
+				<p>
+					Required fields have a text instruction and a border beside
+					their label, as well as native required-field validation. An
+					asterisk (*) also means required in the indicator examples.
+					The pink label background is decorative, not the only cue.
+				</p>
+				<p>
+					If JavaScript is unavailable or the module fails to load,
+					all fields remain available. Follow each example’s condition
+					and provide the matching details yourself. Production forms
+					must check these conditions on the server too.
+				</p>
+			</aside>
 			<!-- Basic Conditional Requirements -->
 			<section>
 				<h2>Basic Conditional Requirements</h2>
@@ -83,12 +87,20 @@
 											name="phone"
 											id="phone"
 											type="tel"
+											aria-describedby="phone-required"
 										/>
 										<small
 											>This field becomes required if the
 											email field is filled out</small
 										>
 									</label>
+									<p
+										class="required-message"
+										id="phone-required"
+									>
+										Required when you enter an email
+										address: provide a phone number.
+									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -155,12 +167,23 @@
 								>
 									<label for="details"
 										>Details
-										<input name="details" id="details" />
+										<input
+											name="details"
+											id="details"
+											aria-describedby="details-required"
+										/>
 										<small
 											>Required if email has a value OR
 											Option 3 is selected</small
 										>
 									</label>
+									<p
+										class="required-message"
+										id="details-required"
+									>
+										Required when email has a value or
+										Option 3 is selected: provide details.
+									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -206,12 +229,23 @@
 								>
 									<label for="secret"
 										>Secret code
-										<input name="secret" id="secret" />
+										<input
+											name="secret"
+											id="secret"
+											aria-describedby="secret-required"
+										/>
 										<small
 											>Try entering "foo@bar.tld" as the
 											email address</small
 										>
 									</label>
+									<p
+										class="required-message"
+										id="secret-required"
+									>
+										Required when email is foo@bar.tld:
+										provide the secret code.
+									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -297,8 +331,18 @@
 												><span class="visibly-hidden"
 													>Other value</span
 												>
-												<input name="radio-other" />
+												<input
+													name="radio-other"
+													aria-describedby="radio-required"
+												/>
 											</label>
+											<p
+												class="required-message"
+												id="radio-required"
+											>
+												Required when Other is selected:
+												describe the other option.
+											</p>
 										</form-required-if>
 									</div>
 								</fieldset>
@@ -378,8 +422,18 @@
 												><span class="visibly-hidden"
 													>Other value</span
 												>
-												<input name="checkbox-other" />
+												<input
+													name="checkbox-other"
+													aria-describedby="checkbox-required"
+												/>
 											</label>
+											<p
+												class="required-message"
+												id="checkbox-required"
+											>
+												Required when Other is selected:
+												describe the other option.
+											</p>
 										</form-required-if>
 									</div>
 								</fieldset>
@@ -423,12 +477,23 @@
 								>
 									<label for="company"
 										>Company
-										<input name="company" id="company" />
+										<input
+											name="company"
+											id="company"
+											aria-describedby="company-required"
+										/>
 										<small
 											>Uses a bold asterisk as the
 											indicator</small
 										>
 									</label>
+									<p
+										class="required-message"
+										id="company-required"
+									>
+										Required when you enter an email
+										address: provide your company.
+									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -468,12 +533,20 @@
 										<input
 											name="department"
 											id="department"
+											aria-describedby="department-required"
 										/>
 										<small
 											>Indicator appears before the label
 											text</small
 										>
 									</label>
+									<p
+										class="required-message"
+										id="department-required"
+									>
+										Required when you enter an email
+										address: provide your department.
+									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -523,7 +596,15 @@
 										type="text"
 										id="field1"
 										name="field1"
+										aria-describedby="field1-required"
 									/>
+									<p
+										class="required-message"
+										id="field1-required"
+									>
+										Required when you enter an email
+										address: complete this field.
+									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -560,7 +641,18 @@
 										><span>Multi-part</span>
 										<span>label text</span></label
 									>
-									<input id="field2" name="field2" />
+									<input
+										id="field2"
+										name="field2"
+										aria-describedby="field2-required"
+									/>
+									<p
+										class="required-message"
+										id="field2-required"
+									>
+										Required when you enter an email
+										address: complete this field.
+									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -591,8 +683,18 @@
 								>
 									<label
 										><span>Wrapped input</span>
-										<input name="field3" />
+										<input
+											name="field3"
+											aria-describedby="field3-required"
+										/>
 									</label>
+									<p
+										class="required-message"
+										id="field3-required"
+									>
+										Required when you enter an email
+										address: complete this field.
+									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -661,6 +763,7 @@
 										<select
 											name="feature-type"
 											id="feature-type"
+											aria-describedby="feature-required"
 										>
 											<option value="">Select...</option>
 											<option value="basic">Basic</option>
@@ -673,6 +776,13 @@
 											enabled</small
 										>
 									</label>
+									<p
+										class="required-message"
+										id="feature-required"
+									>
+										Required when Enable feature is checked:
+										choose a feature type.
+									</p>
 								</form-required-if>
 
 								<form-required-if
@@ -683,6 +793,7 @@
 										<textarea
 											name="config"
 											id="config"
+											aria-describedby="config-required"
 											rows="3"
 										></textarea>
 										<small
@@ -690,6 +801,13 @@
 											selected</small
 										>
 									</label>
+									<p
+										class="required-message"
+										id="config-required"
+									>
+										Required when Advanced is selected:
+										provide the advanced configuration.
+									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -797,8 +915,16 @@
 											type="email"
 											name="contact-email"
 											id="contact-email"
+											aria-describedby="contact-email-required"
 										/>
 									</label>
+									<p
+										class="required-message"
+										id="contact-email-required"
+									>
+										Required when Email is checked: provide
+										your email address.
+									</p>
 								</form-required-if>
 
 								<form-required-if conditions="contact[]=phone">
@@ -808,8 +934,16 @@
 											type="tel"
 											name="contact-phone"
 											id="contact-phone"
+											aria-describedby="contact-phone-required"
 										/>
 									</label>
+									<p
+										class="required-message"
+										id="contact-phone-required"
+									>
+										Required when Phone is checked: provide
+										your phone number.
+									</p>
 								</form-required-if>
 
 								<label for="message"
@@ -823,6 +957,13 @@
 								</label>
 
 								<button type="submit">Send</button>
+								<button type="reset">Reset</button>
+								<p>
+									Demo only: no message will be sent. Choose
+									Email or Phone, then provide the matching
+									contact details. Name and Message are always
+									required.
+								</p>
 							</form>
 						</div>
 					</div>
