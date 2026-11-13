@@ -7,12 +7,6 @@
 		<link rel="stylesheet" href="./styles.css" />
 		<style>
 			/* Demo-specific styles */
-			form-required-if:has([required]) label {
-				outline: 3px solid red;
-				outline-offset: 7px;
-				background: #f7d3d3;
-				color: #000;
-			}
 			form-required-if:defined label.dependent {
 				display: none;
 			}
@@ -27,16 +21,38 @@
 			<p>
 				A web component that makes form fields conditionally required
 				based on the values of other fields. See the
-				<a href="../">README</a> for installation and API documentation.
-			</p>
-			<p>
-				<strong>Visual indicator:</strong> Labels containing required
-				fields get a red outline and pink background in these demos,
-				just to emphasize the field that’s changed.
+				<a
+					href="https://github.com/aarongustafson/form-required-if/blob/main/README.md"
+					>README</a
+				>
+				for installation and API documentation.
 			</p>
 		</header>
 
 		<main>
+			<aside class="note enhancement-note">
+				<p><strong>Try the conditional fields</strong></p>
+				<p>
+					These are validation-only forms. They use
+					<code>method="dialog"</code> outside a dialog: the browser
+					checks the fields but doesn’t navigate or send their values.
+					Your entries stay in place, even without JavaScript or if a
+					module fails. “Check details” isn’t a Send action.
+				</p>
+				<p>
+					Each example explains its condition. A border beside the
+					label and native required-field validation communicate the
+					required state. An asterisk (*) also means required in the
+					indicator examples. The pink label background is decorative,
+					not the only cue.
+				</p>
+				<p>
+					If JavaScript is unavailable or the module fails to load,
+					all fields remain available. Follow each example’s condition
+					and provide the matching details yourself. Production forms
+					must check these conditions on the server too.
+				</p>
+			</aside>
 			<!-- Basic Conditional Requirements -->
 			<section>
 				<h2>Basic Conditional Requirements</h2>
@@ -63,11 +79,12 @@
     &lt;input 
       name="phone" 
       id="phone" 
-      type="tel" /&gt;
+      type="tel" aria-describedby="phone-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="phone-required"&gt;This field becomes required if the email field is filled out&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email" />
@@ -83,12 +100,13 @@
 											name="phone"
 											id="phone"
 											type="tel"
+											aria-describedby="phone-required"
 										/>
-										<small
-											>This field becomes required if the
-											email field is filled out</small
-										>
 									</label>
+									<small id="phone-required"
+										>This field becomes required if the
+										email field is filled out</small
+									>
 								</form-required-if>
 							</form>
 						</div>
@@ -129,11 +147,12 @@
   conditions="email=*||choose=3"
   indicator="*"&gt;</mark>
   &lt;label for="details"&gt;Details
-    &lt;input name="details" id="details" /&gt;
+    &lt;input name="details" id="details" aria-describedby="details-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="details-required"&gt;Required if email has a value OR Option 3 is selected&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email2" />
@@ -155,12 +174,16 @@
 								>
 									<label for="details"
 										>Details
-										<input name="details" id="details" />
-										<small
-											>Required if email has a value OR
-											Option 3 is selected</small
-										>
+										<input
+											name="details"
+											id="details"
+											aria-describedby="details-required"
+										/>
 									</label>
+									<small id="details-required"
+										>Required if email has a value OR Option
+										3 is selected</small
+									>
 								</form-required-if>
 							</form>
 						</div>
@@ -191,11 +214,12 @@
 <mark>&lt;form-required-if 
   conditions="email=foo@bar.tld"&gt;</mark>
   &lt;label for="secret"&gt;Secret code
-    &lt;input name="secret" id="secret" /&gt;
+    &lt;input name="secret" id="secret" aria-describedby="secret-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="secret-required"&gt;Try entering "foo@bar.tld" as the email address&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email3" />
@@ -206,12 +230,16 @@
 								>
 									<label for="secret"
 										>Secret code
-										<input name="secret" id="secret" />
-										<small
-											>Try entering "foo@bar.tld" as the
-											email address</small
-										>
+										<input
+											name="secret"
+											id="secret"
+											aria-describedby="secret-required"
+										/>
 									</label>
+									<small id="secret-required"
+										>Try entering "foo@bar.tld" as the email
+										address</small
+									>
 								</form-required-if>
 							</form>
 						</div>
@@ -262,7 +290,7 @@
   &lt;/div&gt;
 &lt;/fieldset&gt;</code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<fieldset>
 									<legend>Choose an option</legend>
 									<label
@@ -343,7 +371,7 @@
   &lt;/div&gt;
 &lt;/fieldset&gt;</code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<fieldset>
 									<legend>Choose options</legend>
 									<label
@@ -408,11 +436,12 @@
   conditions="email=*" 
   indicator="&lt;b&gt;*&lt;/b&gt;"&gt;</mark>
   &lt;label for="company"&gt;Company
-    &lt;input name="company" id="company" /&gt;
+    &lt;input name="company" id="company" aria-describedby="company-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="company-required"&gt;Uses a bold asterisk as the indicator&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email4" />
@@ -423,12 +452,16 @@
 								>
 									<label for="company"
 										>Company
-										<input name="company" id="company" />
-										<small
-											>Uses a bold asterisk as the
-											indicator</small
-										>
+										<input
+											name="company"
+											id="company"
+											aria-describedby="company-required"
+										/>
 									</label>
+									<small id="company-required"
+										>Uses a bold asterisk as the
+										indicator</small
+									>
 								</form-required-if>
 							</form>
 						</div>
@@ -449,11 +482,12 @@
   &lt;label for="department"&gt;Department
     &lt;input 
       name="department" 
-      id="department" /&gt;
+      id="department" aria-describedby="department-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="department-required"&gt;Indicator appears before the label text&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email5" />
@@ -468,12 +502,13 @@
 										<input
 											name="department"
 											id="department"
+											aria-describedby="department-required"
 										/>
-										<small
-											>Indicator appears before the label
-											text</small
-										>
 									</label>
+									<small id="department-required"
+										>Indicator appears before the label
+										text</small
+									>
 								</form-required-if>
 							</form>
 						</div>
@@ -509,7 +544,7 @@
     name="field1" /&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email6" />
@@ -547,7 +582,7 @@
   &lt;input id="field2" name="field2" /&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email7" />
@@ -580,7 +615,7 @@
   &lt;/label&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email8" />
@@ -625,7 +660,7 @@
     Feature type
     &lt;select 
       name="feature-type" 
-      id="feature-type"&gt;
+      id="feature-type" aria-describedby="feature-required"&gt;
       &lt;option value=""&gt;Select...&lt;/option&gt;
       &lt;option value="basic"&gt;Basic&lt;/option&gt;
       &lt;option value="advanced"&gt;
@@ -633,6 +668,7 @@
       &lt;/option&gt;
     &lt;/select&gt;
   &lt;/label&gt;
+  &lt;small id="feature-required"&gt;Required when feature is enabled&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark>
 
 <mark>&lt;form-required-if 
@@ -641,11 +677,12 @@
     Advanced config
     &lt;textarea 
       name="config" 
-      id="config"&gt;&lt;/textarea&gt;
+      id="config" aria-describedby="config-required"&gt;&lt;/textarea&gt;
   &lt;/label&gt;
+  &lt;small id="config-required"&gt;Required when "Advanced" is selected&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Enable feature
 									<input
@@ -661,6 +698,7 @@
 										<select
 											name="feature-type"
 											id="feature-type"
+											aria-describedby="feature-required"
 										>
 											<option value="">Select...</option>
 											<option value="basic">Basic</option>
@@ -668,11 +706,10 @@
 												Advanced
 											</option>
 										</select>
-										<small
-											>Required when feature is
-											enabled</small
-										>
 									</label>
+									<small id="feature-required"
+										>Required when feature is enabled</small
+									>
 								</form-required-if>
 
 								<form-required-if
@@ -683,13 +720,14 @@
 										<textarea
 											name="config"
 											id="config"
+											aria-describedby="config-required"
 											rows="3"
 										></textarea>
-										<small
-											>Required when "Advanced" is
-											selected</small
-										>
 									</label>
+									<small id="config-required"
+										>Required when "Advanced" is
+										selected</small
+									>
 								</form-required-if>
 							</form>
 						</div>
@@ -709,7 +747,7 @@
 						requires contact details.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code>&lt;form action="#"&gt;
+						<pre><code>&lt;form method="dialog"&gt;
   &lt;label&gt;Name
     &lt;input type="text" 
       name="name" required /&gt;
@@ -760,11 +798,11 @@
   &lt;/label&gt;
 
   &lt;button type="submit"&gt;
-    Send
+    Check details
   &lt;/button&gt;
 &lt;/form&gt;</code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Name
 									<input type="text" name="name" required />
@@ -822,7 +860,14 @@
 									></textarea>
 								</label>
 
-								<button type="submit">Send</button>
+								<button type="submit">Check details</button>
+								<button type="reset">Reset</button>
+								<p>
+									Validation only: no message will be sent.
+									Choose Email or Phone, then provide the
+									matching contact details. Name and Message
+									are always required.
+								</p>
 							</form>
 						</div>
 					</div>
@@ -835,7 +880,10 @@
 				<p>
 					For complete documentation of attributes, methods, and
 					browser support, see the
-					<a href="../">README</a>.
+					<a
+						href="https://github.com/aarongustafson/form-required-if/blob/main/README.md"
+						>README</a
+					>.
 				</p>
 			</section>
 		</main>

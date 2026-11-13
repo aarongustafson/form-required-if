@@ -7,25 +7,83 @@
 		<link rel="stylesheet" href="./styles.css" />
 	</head>
 	<body>
-		<h1>unpkg CDN sanity check</h1>
-		<p>
-			This page loads the guarded definition helper from
-			<code>unpkg</code> and registers the element when supported.
-		</p>
+		<header>
+			<h1>form-required-if via unpkg</h1>
+			<p>
+				This page loads the guarded definition helper from
+				<code>unpkg</code> and registers the element when supported. See
+				the
+				<a
+					href="https://github.com/aarongustafson/form-required-if/blob/main/README.md"
+					>README</a
+				>.
+			</p>
+		</header>
+		<main>
+			<p class="note enhancement-note">
+				Select Email, then provide an email address. If JavaScript is
+				unavailable or the module fails to load, the fields still work:
+				follow that instruction yourself. Production forms must also
+				validate on the server. This demo does not send your details. It
+				uses <code>method="dialog"</code> outside a dialog, so native
+				validation still works but valid entries don’t navigate or send
+				a request. Your entries stay in place even if registration or
+				the component module fails.
+			</p>
+			<section class="demo-section">
+				<h2>Guarded automatic registration</h2>
+				<div class="code-demo-pair">
+					<pre><code>&lt;form method="dialog"&gt;
+&lt;label for="contact-method"&gt;Preferred contact method&lt;/label&gt;
+&lt;select id="contact-method" name="contact-method"&gt;
+  &lt;option value=""&gt;Select one&lt;/option&gt;
+  &lt;option value="email"&gt;Email&lt;/option&gt;
+  &lt;option value="phone"&gt;Phone&lt;/option&gt;
+&lt;/select&gt;
+<mark>&lt;form-required-if conditions="contact-method=email" indicator=" (required)"&gt;</mark>
+  &lt;label for="email"&gt;Email (required when email selected)&lt;/label&gt;
+  &lt;input type="email" id="email" name="email" /&gt;
+<mark>&lt;/form-required-if&gt;</mark>
+&lt;button type="submit"&gt;Check details&lt;/button&gt;
+&lt;button type="reset"&gt;Reset&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+					<div class="demo">
+						<form method="dialog">
+							<label for="contact-method"
+								>Preferred contact method</label
+							>
+							<select id="contact-method" name="contact-method">
+								<option value="">Select one</option>
+								<option value="email">Email</option>
+								<option value="phone">Phone</option>
+							</select>
 
-		<form>
-			<label for="contact-method">Preferred contact method</label>
-			<select id="contact-method" name="contact-method">
-				<option value="">Select one</option>
-				<option value="email">Email</option>
-				<option value="phone">Phone</option>
-			</select>
-
-			<form-required-if conditions="contact-method=email" indicator="*">
-				<label for="email">Email (required when email selected)</label>
-				<input type="email" id="email" name="email" />
-			</form-required-if>
-		</form>
+							<form-required-if
+								conditions="contact-method=email"
+								indicator=" (required)"
+							>
+								<label for="email"
+									>Email (required when email selected)</label
+								>
+								<input type="email" id="email" name="email" />
+							</form-required-if>
+							<button type="submit">Check details</button>
+							<button type="reset">Reset</button>
+						</form>
+					</div>
+				</div>
+			</section>
+		</main>
+		<footer>
+			<p>
+				Made with ❤️ by
+				<a href="https://github.com/aarongustafson">Aaron Gustafson</a>.
+				View the source on
+				<a href="https://github.com/aarongustafson/form-required-if"
+					>GitHub</a
+				>.
+			</p>
+		</footer>
 
 		<script type="module">
 			import { defineFormRequiredIf } from 'https://unpkg.com/@aarongustafson/form-required-if@latest/define.js?module';
