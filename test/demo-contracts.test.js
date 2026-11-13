@@ -80,21 +80,13 @@ describe('demo and publishing contracts', () => {
 					);
 					expect(description.closest('label'), name).toBeNull();
 					const pair = host.closest('.code-demo-pair');
-					const example = document.createElement('template');
-					example.innerHTML =
-						pair.querySelector('pre code').textContent;
-					const shownDescription = example.content.getElementById(
-						description.id,
+					const example = pair.querySelector('pre code').textContent;
+					expect(example, name).toContain(
+						`<small id="${description.id}">${description.textContent.trim().replace(/\s+/g, ' ')}</small>`,
 					);
-					expect(shownDescription?.textContent.trim(), name).toBe(
-						description.textContent.trim().replace(/\s+/g, ' '),
+					expect(example, name).toContain(
+						`aria-describedby="${description.id}"`,
 					);
-					expect(
-						example.content.querySelector(
-							`[aria-describedby="${description.id}"]`,
-						),
-						name,
-					).not.toBeNull();
 				} else {
 					expect(field.hasAttribute('aria-describedby'), name).toBe(
 						false,
