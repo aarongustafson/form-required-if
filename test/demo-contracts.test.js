@@ -27,6 +27,10 @@ describe('demo and publishing contracts', () => {
 		for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 			const template = document.createElement('template');
 			template.innerHTML = await read(`demo/${name}`);
+			expect(
+				template.content.querySelector('header a').getAttribute('href'),
+				name,
+			).toBe('../README.md');
 			for (const host of template.content.querySelectorAll(
 				'form-required-if',
 			)) {
