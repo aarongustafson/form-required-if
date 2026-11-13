@@ -1,8 +1,9 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
+// Only displayed pre/code text is frozen; managed CDN URLs are in scripts.
 const textHashes = {
 	'index.html': [
 		'9548e441ab3d38b6391e026f585cda5ae41882d097b198660ca66cbdd4ac412c',
@@ -26,13 +27,81 @@ const textHashes = {
 	],
 };
 
-async function snippets(name) {
+function parseSnippets(html) {
 	const template = document.createElement('template');
-	template.innerHTML = await readFile(resolve('demo', name), 'utf8');
+	template.innerHTML = html;
 	return [...template.content.querySelectorAll('pre code')];
 }
 
+async function snippets(name) {
+	return parseSnippets(await readFile(resolve('demo', name), 'utf8'));
+}
+
 describe('displayed component-code highlighting', () => {
+	it('accepts a future publishing-helper version update without freezing the CDN URL', async () => {
+		const packagePath = resolve('package.json');
+		const demoPath = resolve('demo/esm.html');
+		const packageText = await readFile(packagePath, 'utf8');
+		const originalDemo = await readFile(demoPath, 'utf8');
+		const packageJson = JSON.parse(packageText);
+		const futureVersion = '99.2.1';
+		const files = new Map([
+			[
+				packagePath,
+				JSON.stringify({ ...packageJson, version: futureVersion }),
+			],
+			[demoPath, originalDemo],
+		]);
+		const writeFileSync = vi.fn((path, content) => {
+			expect(path).toBe(demoPath);
+			files.set(path, content);
+		});
+		vi.doMock('fs', () => ({
+			readFileSync: (path) => {
+				if (!files.has(path))
+					throw new Error(`Unexpected fixture path: ${path}`);
+				return files.get(path);
+			},
+			writeFileSync,
+		}));
+		const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+		try {
+			await import('../scripts/update-demo-versions.js');
+			expect(writeFileSync).toHaveBeenCalledTimes(1);
+			const updatedDemo = files.get(demoPath);
+			expect(updatedDemo).toContain(
+				`${packageJson.name}@${futureVersion}/form-required-if.js`,
+			);
+			expect(updatedDemo).not.toContain(
+				`${packageJson.name}@${packageJson.version}/form-required-if.js`,
+			);
+			const updatedSnippets = parseSnippets(updatedDemo);
+			expect(
+				updatedSnippets.map((code) =>
+					createHash('sha256').update(code.textContent).digest('hex'),
+				),
+			).toEqual(textHashes['esm.html']);
+			expect(
+				updatedSnippets.map((code) =>
+					[...code.querySelectorAll('mark')].map(
+						(mark) => mark.textContent,
+					),
+				),
+			).toEqual(
+				parseSnippets(originalDemo).map((code) =>
+					[...code.querySelectorAll('mark')].map(
+						(mark) => mark.textContent,
+					),
+				),
+			);
+			expect(await readFile(packagePath, 'utf8')).toBe(packageText);
+			expect(await readFile(demoPath, 'utf8')).toBe(originalDemo);
+		} finally {
+			vi.doUnmock('fs');
+			log.mockRestore();
+		}
+	});
+
 	for (const [name, hashes] of Object.entries(textHashes)) {
 		it(`${name}: preserves the exact text of every existing snippet`, async () => {
 			expect(
