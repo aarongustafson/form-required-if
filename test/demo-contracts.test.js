@@ -5,6 +5,21 @@ import { describe, expect, it } from 'vitest';
 const read = (path) => readFile(resolve(process.cwd(), path), 'utf8');
 
 describe('demo and publishing contracts', () => {
+	it('keeps every live demo form natively non-submitting without a script dependency', async () => {
+		for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
+			const template = document.createElement('template');
+			template.innerHTML = await read(`demo/${name}`);
+			const forms = template.content.querySelectorAll('form');
+			expect(forms.length, name).toBeGreaterThan(0);
+			for (const form of forms) {
+				expect(form.getAttribute('method'), name).toBe('dialog');
+				expect(form.hasAttribute('action'), name).toBe(false);
+				expect(form.closest('dialog'), name).toBeNull();
+				expect(form.hasAttribute('novalidate'), name).toBe(false);
+			}
+		}
+	});
+
 	it('links demo README navigation to rendered documentation', async () => {
 		for (const name of (await readdir('demo')).filter((name) =>
 			name.endsWith('.html'),

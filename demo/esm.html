@@ -23,12 +23,17 @@
 				Select Email, then provide an email address. If JavaScript is
 				unavailable or the module fails to load, the fields still work:
 				follow that instruction yourself. Production forms must also
-				validate on the server. This demo does not send your details.
+				validate on the server. This demo does not send your details. It
+				uses <code>method="dialog"</code> outside a dialog, so native
+				validation still works but valid entries don’t navigate or send
+				a request. Your entries stay in place even if registration or
+				the component module fails.
 			</p>
 			<section class="demo-section">
 				<h2>Manual class registration</h2>
 				<div class="code-demo-pair">
-					<pre><code>&lt;label for="contact-method"&gt;Preferred contact method&lt;/label&gt;
+					<pre><code>&lt;form method="dialog"&gt;
+&lt;label for="contact-method"&gt;Preferred contact method&lt;/label&gt;
 &lt;select id="contact-method" name="contact-method"&gt;
   &lt;option value=""&gt;Select one&lt;/option&gt;
   &lt;option value="email"&gt;Email&lt;/option&gt;
@@ -38,9 +43,12 @@
   &lt;label for="email"&gt;Email (required when Email is selected)&lt;/label&gt;
   &lt;input type="email" id="email" name="email" aria-describedby="email-required" /&gt;
   &lt;p class="required-message" id="email-required"&gt;Required when Email is selected: provide your email address.&lt;/p&gt;
-&lt;/form-required-if&gt;</code></pre>
+&lt;/form-required-if&gt;
+&lt;button type="submit"&gt;Check details&lt;/button&gt;
+&lt;button type="reset"&gt;Reset&lt;/button&gt;
+&lt;/form&gt;</code></pre>
 					<div class="demo">
-						<form action="#">
+						<form method="dialog">
 							<label for="contact-method"
 								>Preferred contact method</label
 							>

@@ -368,3 +368,27 @@ form-required-if:has([required]) > .required-message {
 		background-image: linear-gradient(ButtonFace, ButtonFace);
 	}
 }
+
+@media (forced-colors: active) {
+	code,
+	button[type='submit'],
+	button[type='reset'],
+	button[type='submit']:hover,
+	button[type='reset']:hover {
+		background-color: ButtonFace;
+		background-image: none;
+	}
+
+	pre,
+	input:not(
+		[type='checkbox'],
+		[type='radio'],
+		[type='submit'],
+		[type='reset']
+	),
+	select,
+	textarea {
+		background-color: Field;
+		background-image: none;
+	}
+}

@@ -33,6 +33,13 @@
 			<aside class="note enhancement-note">
 				<p><strong>Try the conditional fields</strong></p>
 				<p>
+					These are validation-only forms. They use
+					<code>method="dialog"</code> outside a dialog: the browser
+					checks the fields but doesn’t navigate or send their values.
+					Your entries stay in place, even without JavaScript or if a
+					module fails. “Check details” isn’t a Send action.
+				</p>
+				<p>
 					Required fields have a text instruction and a border beside
 					their label, as well as native required-field validation. An
 					asterisk (*) also means required in the indicator examples.
@@ -75,7 +82,7 @@
   &lt;/label&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email" />
@@ -149,7 +156,7 @@
   &lt;/label&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email2" />
@@ -222,7 +229,7 @@
   &lt;/label&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email3" />
@@ -300,7 +307,7 @@
   &lt;/div&gt;
 &lt;/fieldset&gt;</code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<fieldset>
 									<legend>Choose an option</legend>
 									<label
@@ -391,7 +398,7 @@
   &lt;/div&gt;
 &lt;/fieldset&gt;</code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<fieldset>
 									<legend>Choose options</legend>
 									<label
@@ -470,7 +477,7 @@
   &lt;/label&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email4" />
@@ -522,7 +529,7 @@
   &lt;/label&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email5" />
@@ -586,7 +593,7 @@
     name="field1" /&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email6" />
@@ -632,7 +639,7 @@
   &lt;input id="field2" name="field2" /&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email7" />
@@ -676,7 +683,7 @@
   &lt;/label&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Email address
 									<input type="email" name="email8" />
@@ -751,7 +758,7 @@
   &lt;/label&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Enable feature
 									<input
@@ -831,7 +838,7 @@
 						requires contact details.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code>&lt;form action="#"&gt;
+						<pre><code>&lt;form method="dialog"&gt;
   &lt;label&gt;Name
     &lt;input type="text" 
       name="name" required /&gt;
@@ -882,11 +889,11 @@
   &lt;/label&gt;
 
   &lt;button type="submit"&gt;
-    Send
+    Check details
   &lt;/button&gt;
 &lt;/form&gt;</code></pre>
 						<div class="demo">
-							<form action="#">
+							<form method="dialog">
 								<label
 									>Name
 									<input type="text" name="name" required />
@@ -960,13 +967,13 @@
 									></textarea>
 								</label>
 
-								<button type="submit">Send</button>
+								<button type="submit">Check details</button>
 								<button type="reset">Reset</button>
 								<p>
-									Demo only: no message will be sent. Choose
-									Email or Phone, then provide the matching
-									contact details. Name and Message are always
-									required.
+									Validation only: no message will be sent.
+									Choose Email or Phone, then provide the
+									matching contact details. Name and Message
+									are always required.
 								</p>
 							</form>
 						</div>

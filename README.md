@@ -163,6 +163,9 @@ code with `ButtonText`/`ButtonFace`, and fields and code blocks with
 inherits its surface’s foreground; the Canvas-backed footer uses an 80%
 foreground mix, with full-strength fallbacks for unsupported mixing, forced
 colors, and increased contrast.
+Forced-color rules give fields and code blocks a solid `Field` backplate and
+buttons and standalone inline code a solid `ButtonFace` backplate, including
+button hover. They don’t rely on gradients that the browser may suppress.
 
 Required labels retain the deliberate black-on-pink example theme, with a
 border beside the label and an authored “Required when…” instruction. These are
@@ -179,6 +182,16 @@ fields available and explain which details to provide. Conditional requirements
 aren’t enforced without the enhancement; validate them on the server as well.
 The “Other” examples hide their dependent field only after registration and
 keep entered values when another option is selected.
+
+The demo forms are validation-only, not message-sending examples. Each uses
+`method="dialog"` outside a `<dialog>`: native submission first checks validity,
+then the dialog submission method returns without navigating or sending form
+data because there’s no ancestor dialog to close. The submit buttons say “Check
+details”; valid entries remain in place. This doesn’t depend on an event handler,
+so it also works without JavaScript or when registration or component loading
+fails. Reset buttons still clear entries through native form behavior. If you
+adapt the examples for a real service, choose its submission method and endpoint
+and validate the conditional requirements on that server.
 
 This styling update doesn’t change lifecycle behavior. One existing limitation:
 if an already-required field is disconnected, its condition is cleared while

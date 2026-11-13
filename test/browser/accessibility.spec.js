@@ -297,6 +297,26 @@ test('increased contrast and supported forced-color emulation retain native focu
 	});
 	expect(styles.adjustment).toBe('auto');
 	expect(styles.outline).not.toBe('none');
+	for (const selector of [
+		'pre',
+		'#phone',
+		'#feature-type',
+		'#config',
+		'.demo-section > p code',
+		'button[type="submit"]',
+		'button[type="reset"]',
+	]) {
+		expect(
+			await page
+				.locator(selector)
+				.first()
+				.evaluate((element) => {
+					const style = getComputedStyle(element);
+					return [style.backgroundImage, style.forcedColorAdjust];
+				}),
+			selector,
+		).toEqual(['none', 'auto']);
+	}
 	expect(
 		(await measurements(page.locator('#phone-required'))).text,
 	).toBeGreaterThanOrEqual(4.5);
@@ -327,7 +347,9 @@ test('contact form keyboard submission focuses the invalid field without losing 
 	const field = form.locator('#contact-email');
 	await expect(field).toHaveAttribute('required', '');
 	await form.locator('#message').fill('Please contact me.');
-	await form.getByRole('button', { name: 'Send', exact: true }).focus();
+	await form
+		.getByRole('button', { name: 'Check details', exact: true })
+		.focus();
 	await page.keyboard.press('Enter');
 	await expect(field).toBeFocused();
 	await expect(form.locator('input[name="name"]')).toHaveValue('A reader');
