@@ -1,6 +1,10 @@
 # Required If Web Component
 
-[![npm version](https://img.shields.io/npm/v/@aarongustafson/form-required-if.svg)](https://www.npmjs.com/package/@aarongustafson/form-required-if) [![Build Status](https://img.shields.io/github/actions/workflow/status/aarongustafson/form-required-if/ci.yml?branch=main)](https://github.com/aarongustafson/form-required-if/actions)
+[![npm version](https://img.shields.io/npm/v/@aarongustafson/form-required-if.svg)](https://www.npmjs.com/package/@aarongustafson/form-required-if)
+[![CI status](https://img.shields.io/github/actions/workflow/status/aarongustafson/form-required-if/ci.yml?branch=main&label=CI)](https://github.com/aarongustafson/form-required-if/actions/workflows/ci.yml)
+[![Minified + gzipped size](https://img.shields.io/bundlejs/size/@aarongustafson/form-required-if?format=minzip&label=min%2Bgzip)](https://bundlejs.com/?q=@aarongustafson/form-required-if)
+[![License](https://img.shields.io/npm/l/@aarongustafson/form-required-if)](https://github.com/aarongustafson/form-required-if/blob/main/LICENSE)
+[![Type definitions](https://img.shields.io/npm/types/@aarongustafson/form-required-if)](https://github.com/aarongustafson/form-required-if/blob/main/form-required-if.d.ts)
 
 Currently, HTML only supports making a field required or optional. Sometimes you need a field to be required only when certain other fields have a (particular) value. The `form-required-if` web component enables that.
 
