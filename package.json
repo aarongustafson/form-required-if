@@ -1,6 +1,6 @@
 {
 	"name": "@aarongustafson/form-required-if",
-	"version": "3.1.3",
+	"version": "3.1.4",
 	"description": "Web component that enables fields to be required based on the value(s) of other fields.",
 	"keywords": [
 		"html",
