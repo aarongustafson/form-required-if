@@ -1,10 +1,28 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const read = (path) => readFile(resolve(process.cwd(), path), 'utf8');
 
 describe('demo and publishing contracts', () => {
+	it('links demo README navigation to rendered documentation', async () => {
+		for (const name of (await readdir('demo')).filter((name) =>
+			name.endsWith('.html'),
+		)) {
+			const template = document.createElement('template');
+			template.innerHTML = await read(`demo/${name}`);
+			const links = [
+				...template.content.querySelectorAll('a:not([download])'),
+			].filter((link) => link.textContent.trim() === 'README');
+			expect(links.length, name).toBeGreaterThan(0);
+			for (const link of links) {
+				expect(link.getAttribute('href'), name).toBe(
+					'https://github.com/aarongustafson/form-required-if/blob/main/README.md',
+				);
+			}
+		}
+	});
+
 	it('keeps the versioned demo, staging, tag-push, and publishing automation', async () => {
 		const packageJson = JSON.parse(await read('package.json'));
 		expect(packageJson.scripts.version).toBe(
@@ -27,10 +45,6 @@ describe('demo and publishing contracts', () => {
 		for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 			const template = document.createElement('template');
 			template.innerHTML = await read(`demo/${name}`);
-			expect(
-				template.content.querySelector('header a').getAttribute('href'),
-				name,
-			).toBe('../README.md');
 			for (const host of template.content.querySelectorAll(
 				'form-required-if',
 			)) {
