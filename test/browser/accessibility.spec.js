@@ -30,6 +30,31 @@ async function demo(page, name = 'index.html') {
 		.toBe(true);
 }
 
+test('existing hints describe fields without repeating in accessible names', async ({
+	page,
+}) => {
+	await demo(page);
+	for (const [id, name] of [
+		['phone', 'Phone number'],
+		['details', 'Details'],
+		['secret', 'Secret code'],
+		['company', 'Company'],
+		['department', 'Department'],
+		['feature-type', 'Feature type'],
+		['config', 'Advanced configuration'],
+	]) {
+		const field = page.locator(`#${id}`);
+		const descriptionId = await field.getAttribute('aria-describedby');
+		const hint = page.locator(`#${descriptionId}`);
+		await expect(hint).toBeVisible();
+		await expect(field).toHaveAccessibleName(name);
+		await expect(field).toHaveAccessibleDescription(
+			(await hint.textContent()).trim().replace(/\s+/g, ' '),
+		);
+	}
+	await expect(page.locator('.required-message')).toHaveCount(0);
+});
+
 for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 	test(`${name}: required instructions, native validation, reset, and focus`, async ({
 		page,
@@ -43,8 +68,18 @@ for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 		else await trigger.selectOption('email');
 		await expect(field).toHaveAttribute('required', '');
 		await expect(field).toHaveAttribute('aria-required', 'true');
-		await expect(form.locator('.required-message').first()).toBeVisible();
-		await expect(field).toHaveAccessibleDescription(/required/i);
+		if (name === 'index.html') {
+			await expect(form.locator('#phone-required')).toBeVisible();
+			await expect(field).toHaveAccessibleName('Phone number*');
+			await expect(field).toHaveAccessibleDescription(
+				'This field becomes required if the email field is filled out',
+			);
+		} else {
+			await expect(field).not.toHaveAttribute('aria-describedby');
+			await expect(field).toHaveAccessibleName(
+				/Email \(required when email selected\)/,
+			);
+		}
 		await field.focus();
 		expect(
 			await field.evaluate((field) => {
@@ -70,7 +105,12 @@ for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 		);
 		await form.evaluate((form) => form.reset());
 		await expect(field).not.toHaveAttribute('required', '');
-		await expect(form.locator('.required-message').first()).toBeHidden();
+		if (name === 'index.html') {
+			await expect(form.locator('#phone-required')).toBeVisible();
+			await expect(field).toHaveAccessibleDescription(
+				'This field becomes required if the email field is filled out',
+			);
+		}
 	});
 
 	test(`${name}: narrow and enlarged text reflow, paired layout, and recovery`, async ({
@@ -160,7 +200,6 @@ test('all 19 study palettes retain reading, required-theme, field, and button co
 			'footer',
 			'#phone-required',
 			'label[for="phone"]',
-			'label[for="phone"] small',
 		]) {
 			expect(
 				(await measurements(page.locator(selector).first())).text,
@@ -204,7 +243,6 @@ for (const colorScheme of ['light', 'dark']) {
 			'footer',
 			'#phone-required',
 			'label[for="phone"]',
-			'label[for="phone"] small',
 			'#phone',
 			'a',
 			'small',
@@ -354,7 +392,8 @@ test('contact form keyboard submission focuses the invalid field without losing 
 	await expect(field).toBeFocused();
 	await expect(form.locator('input[name="name"]')).toHaveValue('A reader');
 	await expect(form.locator('#message')).toHaveValue('Please contact me.');
-	await expect(form.locator('#contact-email-required')).toBeVisible();
+	await expect(field).toHaveAccessibleName('Email address');
+	await expect(field).not.toHaveAttribute('aria-describedby');
 	await form.getByRole('button', { name: 'Reset', exact: true }).click();
 	await expect(field).not.toHaveAttribute('required', '');
 	await expect(form.locator('input[name="name"]')).toHaveValue('');

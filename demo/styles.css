@@ -341,15 +341,6 @@ form-required-if:has([required]) > label {
 	color: #000;
 }
 
-.required-message {
-	display: none;
-	font-weight: bold;
-}
-
-form-required-if:has([required]) > .required-message {
-	display: block;
-}
-
 @media (max-width: 600px) {
 	body,
 	.demo-section,

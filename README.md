@@ -168,12 +168,13 @@ buttons and standalone inline code a solid `ButtonFace` backplate, including
 button hover. They don’t rely on gradients that the browser may suppress.
 
 Required labels retain the deliberate black-on-pink example theme, with a
-border beside the label and an authored “Required when…” instruction. These are
-demo styles, not component defaults. The instruction’s `aria-describedby`
-association and `.required-message` CSS work alongside native required-field
-validation; they don’t replace it or introduce live announcements. The descriptions
-state the condition even when referenced while visually hidden, so they don’t
-announce an optional field as currently required.
+border beside the label. These are demo styles, not component defaults.
+Where an example already has supporting text, `aria-describedby` references
+that text rather than adding a second instruction. The text stays visible
+outside the label, so it contributes to the field’s description rather than
+repeating in its accessible name. Examples without supporting text keep their
+existing labels and explanations. Native required-field validation and authored
+indicators still communicate the changing state without live announcements.
 Translate labels, conditional instructions, and `indicator` content in your
 markup. Native validation messages come from the browser.
 

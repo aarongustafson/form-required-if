@@ -55,23 +55,51 @@ describe('demo and publishing contracts', () => {
 		);
 	});
 
-	it('gives every conditional control authored required instructions', async () => {
+	it('reuses existing help text without duplicate messages or label text', async () => {
 		const { document } = window;
 		for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 			const template = document.createElement('template');
 			template.innerHTML = await read(`demo/${name}`);
+			expect(
+				template.content.querySelector('.required-message'),
+				name,
+			).toBeNull();
+			expect(
+				template.content.querySelectorAll('.demo small').length,
+				name,
+			).toBe(name === 'index.html' ? 7 : 0);
 			for (const host of template.content.querySelectorAll(
 				'form-required-if',
 			)) {
 				const field = host.querySelector('input, select, textarea');
-				const description = host.querySelector('.required-message');
-				expect(description, name).not.toBeNull();
-				expect(field.getAttribute('aria-describedby'), name).toBe(
-					description.id,
-				);
-				// Referenced hidden descriptions still contribute to the accessible
-				// description before a field becomes required.
-				expect(description.textContent, name).toMatch(/Required when/);
+				const description = host.querySelector('small');
+				if (description) {
+					expect(description.id, name).not.toBe('');
+					expect(field.getAttribute('aria-describedby'), name).toBe(
+						description.id,
+					);
+					expect(description.closest('label'), name).toBeNull();
+					const pair = host.closest('.code-demo-pair');
+					const example = document.createElement('template');
+					example.innerHTML =
+						pair.querySelector('pre code').textContent;
+					const shownDescription = example.content.getElementById(
+						description.id,
+					);
+					expect(shownDescription?.textContent.trim(), name).toBe(
+						description.textContent.trim().replace(/\s+/g, ' '),
+					);
+					expect(
+						example.content.querySelector(
+							`[aria-describedby="${description.id}"]`,
+						),
+						name,
+					).not.toBeNull();
+				} else {
+					expect(field.hasAttribute('aria-describedby'), name).toBe(
+						false,
+					);
+				}
 			}
 		}
 	});

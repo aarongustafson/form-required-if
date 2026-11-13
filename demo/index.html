@@ -40,10 +40,11 @@
 					module fails. “Check details” isn’t a Send action.
 				</p>
 				<p>
-					Required fields have a text instruction and a border beside
-					their label, as well as native required-field validation. An
-					asterisk (*) also means required in the indicator examples.
-					The pink label background is decorative, not the only cue.
+					Each example explains its condition. A border beside the
+					label and native required-field validation communicate the
+					required state. An asterisk (*) also means required in the
+					indicator examples. The pink label background is decorative,
+					not the only cue.
 				</p>
 				<p>
 					If JavaScript is unavailable or the module fails to load,
@@ -78,8 +79,9 @@
     &lt;input 
       name="phone" 
       id="phone" 
-      type="tel" /&gt;
+      type="tel" aria-describedby="phone-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="phone-required"&gt;This field becomes required if the email field is filled out&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
 							<form method="dialog">
@@ -100,18 +102,11 @@
 											type="tel"
 											aria-describedby="phone-required"
 										/>
-										<small
-											>This field becomes required if the
-											email field is filled out</small
-										>
 									</label>
-									<p
-										class="required-message"
-										id="phone-required"
+									<small id="phone-required"
+										>This field becomes required if the
+										email field is filled out</small
 									>
-										Required when you enter an email
-										address: provide a phone number.
-									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -152,8 +147,9 @@
   conditions="email=*||choose=3"
   indicator="*"&gt;</mark>
   &lt;label for="details"&gt;Details
-    &lt;input name="details" id="details" /&gt;
+    &lt;input name="details" id="details" aria-describedby="details-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="details-required"&gt;Required if email has a value OR Option 3 is selected&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
 							<form method="dialog">
@@ -183,18 +179,11 @@
 											id="details"
 											aria-describedby="details-required"
 										/>
-										<small
-											>Required if email has a value OR
-											Option 3 is selected</small
-										>
 									</label>
-									<p
-										class="required-message"
-										id="details-required"
+									<small id="details-required"
+										>Required if email has a value OR Option
+										3 is selected</small
 									>
-										Required when email has a value or
-										Option 3 is selected: provide details.
-									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -225,8 +214,9 @@
 <mark>&lt;form-required-if 
   conditions="email=foo@bar.tld"&gt;</mark>
   &lt;label for="secret"&gt;Secret code
-    &lt;input name="secret" id="secret" /&gt;
+    &lt;input name="secret" id="secret" aria-describedby="secret-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="secret-required"&gt;Try entering "foo@bar.tld" as the email address&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
 							<form method="dialog">
@@ -245,18 +235,11 @@
 											id="secret"
 											aria-describedby="secret-required"
 										/>
-										<small
-											>Try entering "foo@bar.tld" as the
-											email address</small
-										>
 									</label>
-									<p
-										class="required-message"
-										id="secret-required"
+									<small id="secret-required"
+										>Try entering "foo@bar.tld" as the email
+										address</small
 									>
-										Required when email is foo@bar.tld:
-										provide the secret code.
-									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -342,18 +325,8 @@
 												><span class="visibly-hidden"
 													>Other value</span
 												>
-												<input
-													name="radio-other"
-													aria-describedby="radio-required"
-												/>
+												<input name="radio-other" />
 											</label>
-											<p
-												class="required-message"
-												id="radio-required"
-											>
-												Required when Other is selected:
-												describe the other option.
-											</p>
 										</form-required-if>
 									</div>
 								</fieldset>
@@ -433,18 +406,8 @@
 												><span class="visibly-hidden"
 													>Other value</span
 												>
-												<input
-													name="checkbox-other"
-													aria-describedby="checkbox-required"
-												/>
+												<input name="checkbox-other" />
 											</label>
-											<p
-												class="required-message"
-												id="checkbox-required"
-											>
-												Required when Other is selected:
-												describe the other option.
-											</p>
 										</form-required-if>
 									</div>
 								</fieldset>
@@ -473,8 +436,9 @@
   conditions="email=*" 
   indicator="&lt;b&gt;*&lt;/b&gt;"&gt;</mark>
   &lt;label for="company"&gt;Company
-    &lt;input name="company" id="company" /&gt;
+    &lt;input name="company" id="company" aria-describedby="company-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="company-required"&gt;Uses a bold asterisk as the indicator&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
 							<form method="dialog">
@@ -493,18 +457,11 @@
 											id="company"
 											aria-describedby="company-required"
 										/>
-										<small
-											>Uses a bold asterisk as the
-											indicator</small
-										>
 									</label>
-									<p
-										class="required-message"
-										id="company-required"
+									<small id="company-required"
+										>Uses a bold asterisk as the
+										indicator</small
 									>
-										Required when you enter an email
-										address: provide your company.
-									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -525,8 +482,9 @@
   &lt;label for="department"&gt;Department
     &lt;input 
       name="department" 
-      id="department" /&gt;
+      id="department" aria-describedby="department-required" /&gt;
   &lt;/label&gt;
+  &lt;small id="department-required"&gt;Indicator appears before the label text&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
 							<form method="dialog">
@@ -546,18 +504,11 @@
 											id="department"
 											aria-describedby="department-required"
 										/>
-										<small
-											>Indicator appears before the label
-											text</small
-										>
 									</label>
-									<p
-										class="required-message"
-										id="department-required"
+									<small id="department-required"
+										>Indicator appears before the label
+										text</small
 									>
-										Required when you enter an email
-										address: provide your department.
-									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -607,15 +558,7 @@
 										type="text"
 										id="field1"
 										name="field1"
-										aria-describedby="field1-required"
 									/>
-									<p
-										class="required-message"
-										id="field1-required"
-									>
-										Required when you enter an email
-										address: complete this field.
-									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -652,18 +595,7 @@
 										><span>Multi-part</span>
 										<span>label text</span></label
 									>
-									<input
-										id="field2"
-										name="field2"
-										aria-describedby="field2-required"
-									/>
-									<p
-										class="required-message"
-										id="field2-required"
-									>
-										Required when you enter an email
-										address: complete this field.
-									</p>
+									<input id="field2" name="field2" />
 								</form-required-if>
 							</form>
 						</div>
@@ -694,18 +626,8 @@
 								>
 									<label
 										><span>Wrapped input</span>
-										<input
-											name="field3"
-											aria-describedby="field3-required"
-										/>
+										<input name="field3" />
 									</label>
-									<p
-										class="required-message"
-										id="field3-required"
-									>
-										Required when you enter an email
-										address: complete this field.
-									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -738,7 +660,7 @@
     Feature type
     &lt;select 
       name="feature-type" 
-      id="feature-type"&gt;
+      id="feature-type" aria-describedby="feature-required"&gt;
       &lt;option value=""&gt;Select...&lt;/option&gt;
       &lt;option value="basic"&gt;Basic&lt;/option&gt;
       &lt;option value="advanced"&gt;
@@ -746,6 +668,7 @@
       &lt;/option&gt;
     &lt;/select&gt;
   &lt;/label&gt;
+  &lt;small id="feature-required"&gt;Required when feature is enabled&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark>
 
 <mark>&lt;form-required-if 
@@ -754,8 +677,9 @@
     Advanced config
     &lt;textarea 
       name="config" 
-      id="config"&gt;&lt;/textarea&gt;
+      id="config" aria-describedby="config-required"&gt;&lt;/textarea&gt;
   &lt;/label&gt;
+  &lt;small id="config-required"&gt;Required when "Advanced" is selected&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
 						<div class="demo">
 							<form method="dialog">
@@ -782,18 +706,10 @@
 												Advanced
 											</option>
 										</select>
-										<small
-											>Required when feature is
-											enabled</small
-										>
 									</label>
-									<p
-										class="required-message"
-										id="feature-required"
+									<small id="feature-required"
+										>Required when feature is enabled</small
 									>
-										Required when Enable feature is checked:
-										choose a feature type.
-									</p>
 								</form-required-if>
 
 								<form-required-if
@@ -807,18 +723,11 @@
 											aria-describedby="config-required"
 											rows="3"
 										></textarea>
-										<small
-											>Required when "Advanced" is
-											selected</small
-										>
 									</label>
-									<p
-										class="required-message"
-										id="config-required"
+									<small id="config-required"
+										>Required when "Advanced" is
+										selected</small
 									>
-										Required when Advanced is selected:
-										provide the advanced configuration.
-									</p>
 								</form-required-if>
 							</form>
 						</div>
@@ -926,16 +835,8 @@
 											type="email"
 											name="contact-email"
 											id="contact-email"
-											aria-describedby="contact-email-required"
 										/>
 									</label>
-									<p
-										class="required-message"
-										id="contact-email-required"
-									>
-										Required when Email is checked: provide
-										your email address.
-									</p>
 								</form-required-if>
 
 								<form-required-if conditions="contact[]=phone">
@@ -945,16 +846,8 @@
 											type="tel"
 											name="contact-phone"
 											id="contact-phone"
-											aria-describedby="contact-phone-required"
 										/>
 									</label>
-									<p
-										class="required-message"
-										id="contact-phone-required"
-									>
-										Required when Phone is checked: provide
-										your phone number.
-									</p>
 								</form-required-if>
 
 								<label for="message"
