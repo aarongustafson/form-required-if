@@ -40,11 +40,11 @@
   &lt;option value="email"&gt;Email&lt;/option&gt;
   &lt;option value="phone"&gt;Phone&lt;/option&gt;
 &lt;/select&gt;
-&lt;form-required-if conditions="contact-method=email" indicator=" (required)"&gt;
+<mark>&lt;form-required-if conditions="contact-method=email" indicator=" (required)"&gt;</mark>
   &lt;label for="email"&gt;Email (required when Email is selected)&lt;/label&gt;
   &lt;input type="email" id="email" name="email" aria-describedby="email-required" /&gt;
   &lt;p class="required-message" id="email-required"&gt;Required when Email is selected: provide your email address.&lt;/p&gt;
-&lt;/form-required-if&gt;
+<mark>&lt;/form-required-if&gt;</mark>
 &lt;button type="submit"&gt;Check details&lt;/button&gt;
 &lt;button type="reset"&gt;Reset&lt;/button&gt;
 &lt;/form&gt;</code></pre>
