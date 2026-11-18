@@ -80,11 +80,9 @@ test('forced-color rules restore solid field/button backplates without gradients
 				}),
 				selector,
 			).toEqual(
-				selector === 'pre'
-					? ['rgb(16, 16, 16)', 'none', 'rgb(238, 238, 238)']
-					: buttonPair
-						? ['rgb(32, 48, 64)', 'none', 'rgb(250, 250, 250)']
-						: ['rgb(224, 224, 224)', 'none', 'rgb(18, 18, 18)'],
+				buttonPair
+					? ['rgb(32, 48, 64)', 'none', 'rgb(250, 250, 250)']
+					: ['rgb(224, 224, 224)', 'none', 'rgb(18, 18, 18)'],
 			);
 		}
 	}
