@@ -55,7 +55,7 @@ test('forced-color rules restore solid field/button backplates without gradients
 		content: substitute(`${css}\n${forced}`, palette),
 	});
 	for (const selector of [
-		'pre',
+		'micro-lighter',
 		'.event-log',
 		'#phone',
 		'#feature-type',
@@ -86,4 +86,8 @@ test('forced-color rules restore solid field/button backplates without gradients
 			);
 		}
 	}
+	const snippet = page.locator('micro-lighter pre').first();
+	await expect(snippet).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+	await expect(snippet).toHaveCSS('background-image', 'none');
+	await expect(snippet).toHaveCSS('color', 'rgb(18, 18, 18)');
 });
