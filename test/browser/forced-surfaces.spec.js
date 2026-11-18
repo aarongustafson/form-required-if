@@ -5,11 +5,30 @@ import { substitute } from './palettes.js';
 test('forced-color rules restore solid field/button backplates without gradients', async ({
 	page,
 }) => {
-	await page.goto('/demo/index.html');
-	const css = await readFile(
-		new URL('../../demo/styles.css', import.meta.url),
-		'utf8',
+	await page.route(
+		'https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/**',
+		(route) => route.abort(),
 	);
+	await page.goto('/demo/index.html');
+	const css = (
+		await Promise.all(
+			['styles.css', 'demo-shell.css'].map((file) =>
+				readFile(
+					new URL(`../../demo/${file}`, import.meta.url),
+					'utf8',
+				),
+			),
+		)
+	).join('\n');
+	await page
+		.locator('link[rel="stylesheet"]')
+		.evaluateAll((links) => links.forEach((link) => link.remove()));
+	await page.locator('main').evaluate((main) => {
+		const log = document.createElement('pre');
+		log.className = 'event-log';
+		log.textContent = 'Event output';
+		main.append(log);
+	});
 	const forced = await page.evaluate((css) => {
 		const style = document.createElement('style');
 		style.textContent = css;
@@ -37,6 +56,7 @@ test('forced-color rules restore solid field/button backplates without gradients
 	});
 	for (const selector of [
 		'pre',
+		'.event-log',
 		'#phone',
 		'#feature-type',
 		'#config',
@@ -60,9 +80,11 @@ test('forced-color rules restore solid field/button backplates without gradients
 				}),
 				selector,
 			).toEqual(
-				buttonPair
-					? ['rgb(32, 48, 64)', 'none', 'rgb(250, 250, 250)']
-					: ['rgb(224, 224, 224)', 'none', 'rgb(18, 18, 18)'],
+				selector === 'pre'
+					? ['rgb(16, 16, 16)', 'none', 'rgb(238, 238, 238)']
+					: buttonPair
+						? ['rgb(32, 48, 64)', 'none', 'rgb(250, 250, 250)']
+						: ['rgb(224, 224, 224)', 'none', 'rgb(18, 18, 18)'],
 			);
 		}
 	}

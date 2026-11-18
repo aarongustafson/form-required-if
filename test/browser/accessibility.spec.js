@@ -8,6 +8,10 @@ const source = await read('form-required-if.js');
 const definition = await read('define.js');
 
 async function demo(page, name = 'index.html') {
+	await page.route(
+		'https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/**',
+		(route) => route.abort(),
+	);
 	await page.route('https://esm.sh/**', (route) =>
 		route.fulfill({ contentType: 'text/javascript', body: source }),
 	);
@@ -178,7 +182,13 @@ test('all 19 study palettes retain reading, required-theme, field, and button co
 	page,
 }) => {
 	await demo(page);
-	const css = await read('demo/styles.css');
+	const css = [
+		await read('demo/styles.css'),
+		await read('demo/demo-shell.css'),
+	].join('\n');
+	await page
+		.locator('link[rel="stylesheet"]')
+		.evaluateAll((links) => links.forEach((link) => link.remove()));
 	const style = await page.addStyleTag({ content: css });
 	await page.locator('input[name="email"]').fill('reader@example.com');
 	await expect(page.locator('#phone')).toHaveAttribute('required', '');

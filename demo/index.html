@@ -4,7 +4,12 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>Required If Web Component Demo</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/themes/github.css"
+		/>
 		<link rel="stylesheet" href="./styles.css" />
+		<link rel="stylesheet" href="./demo-shell.css" />
 		<style>
 			/* Demo-specific styles */
 			form-required-if:defined label.dependent {
@@ -15,10 +20,12 @@
 			}
 		</style>
 	</head>
-	<body>
+	<body data-syntax-theme="github">
+		<a class="skip-link" href="#main">Skip to examples</a>
 		<header>
-			<h1>Required If Web Component Demo</h1>
-			<p>
+			<p class="eyebrow">Web component / Examples</p>
+			<h1>&lt;form-required-if&gt;</h1>
+			<p class="lede">
 				A web component that makes form fields conditionally required
 				based on the values of other fields. See the
 				<a
@@ -27,9 +34,27 @@
 				>
 				for installation and API documentation.
 			</p>
+			<nav aria-label="Component resources">
+				<a
+					href="https://github.com/aarongustafson/form-required-if/blob/main/README.md"
+					>Read the README</a
+				>
+				<a href="https://github.com/aarongustafson/form-required-if"
+					>View on GitHub</a
+				>
+				<a href="./esm.html">esm.sh example</a>
+				<a href="./unpkg.html">unpkg example</a>
+			</nav>
 		</header>
 
-		<main>
+		<main id="main" tabindex="-1">
+			<p
+				id="microlighter-status"
+				class="enhancement-status"
+				role="status"
+				hidden
+			></p>
+
 			<aside class="note enhancement-note">
 				<p><strong>Try the conditional fields</strong></p>
 				<p>
@@ -68,7 +93,16 @@
 						required when the email field contains any value.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code>&lt;label&gt;Email address
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="Field Required if Another Field Has Any Value code 1"
+								tabindex="0"
+							><code>&lt;label&gt;Email address
   &lt;input type="email" name="email" /&gt;
 &lt;/label&gt;
 
@@ -83,6 +117,7 @@
   &lt;/label&gt;
   &lt;small id="phone-required"&gt;This field becomes required if the email field is filled out&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -130,7 +165,16 @@
 						value OR the select has "Option 3" chosen.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code>&lt;label&gt;Email address
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="Multiple Conditions (OR) code 2"
+								tabindex="0"
+							><code>&lt;label&gt;Email address
   &lt;input type="email" name="email" /&gt;
 &lt;/label&gt;
 
@@ -151,6 +195,7 @@
   &lt;/label&gt;
   &lt;small id="details-required"&gt;Required if email has a value OR Option 3 is selected&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -207,7 +252,16 @@
 						that exact value.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code>&lt;label&gt;Email address
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="Exact Value Match code 3"
+								tabindex="0"
+							><code>&lt;label&gt;Email address
   &lt;input type="email" name="email" /&gt;
 &lt;/label&gt;
 
@@ -218,6 +272,7 @@
   &lt;/label&gt;
   &lt;small id="secret-required"&gt;Try entering "foo@bar.tld" as the email address&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -262,7 +317,16 @@
 						required for them to specify.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code>&lt;fieldset&gt;
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label='Radio "Other" Pattern code 4'
+								tabindex="0"
+							><code>&lt;fieldset&gt;
   &lt;legend&gt;Choose an option&lt;/legend&gt;
   &lt;label&gt;
     &lt;input type="radio" 
@@ -289,6 +353,7 @@
     <mark>&lt;/form-required-if&gt;</mark>
   &lt;/div&gt;
 &lt;/fieldset&gt;</code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<fieldset>
@@ -342,7 +407,16 @@
 						<code>checkbox[]=other</code> syntax.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code>&lt;fieldset&gt;
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label='Checkbox "Other" Pattern code 5'
+								tabindex="0"
+							><code>&lt;fieldset&gt;
   &lt;legend&gt;Choose options&lt;/legend&gt;
   &lt;label&gt;
     &lt;input type="checkbox" 
@@ -370,6 +444,7 @@
     <mark>&lt;/form-required-if&gt;</mark>
   &lt;/div&gt;
 &lt;/fieldset&gt;</code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<fieldset>
@@ -432,7 +507,16 @@
 						<code>indicator="&lt;b&gt;*&lt;/b&gt;"</code>.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code><mark>&lt;form-required-if 
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="HTML Indicator code 6"
+								tabindex="0"
+							><code><mark>&lt;form-required-if 
   conditions="email=*" 
   indicator="&lt;b&gt;*&lt;/b&gt;"&gt;</mark>
   &lt;label for="company"&gt;Company
@@ -440,6 +524,7 @@
   &lt;/label&gt;
   &lt;small id="company-required"&gt;Uses a bold asterisk as the indicator&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -475,7 +560,16 @@
 						the indicator before the label text instead of after.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code><mark>&lt;form-required-if 
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="Indicator Positioning code 7"
+								tabindex="0"
+							><code><mark>&lt;form-required-if 
   conditions="email=*"
   indicator="*"
   indicator-position="before"&gt;</mark>
@@ -486,6 +580,7 @@
   &lt;/label&gt;
   &lt;small id="department-required"&gt;Indicator appears before the label text&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -532,7 +627,16 @@
 						<code>label</code>.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code><mark>&lt;form-required-if 
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="Sibling Label &amp; Input code 8"
+								tabindex="0"
+							><code><mark>&lt;form-required-if 
   conditions="email=*" 
   indicator="*"&gt;</mark>
   &lt;label for="field1"&gt;
@@ -543,6 +647,7 @@
     id="field1" 
     name="field1" /&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -572,7 +677,16 @@
 						elements.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code><mark>&lt;form-required-if 
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="Label with Nested Elements code 9"
+								tabindex="0"
+							><code><mark>&lt;form-required-if 
   conditions="email=*" 
   indicator="*"&gt;</mark>
   &lt;label for="field2"&gt;
@@ -581,6 +695,7 @@
   &lt;/label&gt;
   &lt;input id="field2" name="field2" /&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -606,7 +721,16 @@
 					<h3>Label Wrapping Input</h3>
 					<p>Label can wrap the <code>input</code> element.</p>
 					<div class="code-demo-pair">
-						<pre><code><mark>&lt;form-required-if 
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="Label Wrapping Input code 10"
+								tabindex="0"
+							><code><mark>&lt;form-required-if 
   conditions="email=*" 
   indicator="*"&gt;</mark>
   &lt;label&gt;
@@ -614,6 +738,7 @@
     &lt;input name="field3" /&gt;
   &lt;/label&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -647,7 +772,16 @@
 						C required.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code>&lt;label&gt;Enable feature
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="Chained Dependencies code 11"
+								tabindex="0"
+							><code>&lt;label&gt;Enable feature
   &lt;input 
     type="checkbox" 
     name="enable" 
@@ -681,6 +815,7 @@
   &lt;/label&gt;
   &lt;small id="config-required"&gt;Required when "Advanced" is selected&lt;/small&gt;
 <mark>&lt;/form-required-if&gt;</mark></code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -747,7 +882,16 @@
 						requires contact details.
 					</p>
 					<div class="code-demo-pair">
-						<pre><code>&lt;form method="dialog"&gt;
+						<micro-lighter
+							class="code-panel"
+							language="html"
+							controls="copy"
+							data-label="HTML"
+						>
+							<pre
+								aria-label="Contact Form with Conditional Fields code 12"
+								tabindex="0"
+							><code>&lt;form method="dialog"&gt;
   &lt;label&gt;Name
     &lt;input type="text" 
       name="name" required /&gt;
@@ -801,6 +945,7 @@
     Check details
   &lt;/button&gt;
 &lt;/form&gt;</code></pre>
+						</micro-lighter>
 						<div class="demo">
 							<form method="dialog">
 								<label
@@ -900,5 +1045,6 @@
 		</footer>
 
 		<script src="../define.js" type="module"></script>
+		<script type="module" src="./code-examples.js"></script>
 	</body>
 </html>

@@ -4,12 +4,19 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>form-required-if via esm.sh</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/themes/github.css"
+		/>
 		<link rel="stylesheet" href="./styles.css" />
+		<link rel="stylesheet" href="./demo-shell.css" />
 	</head>
-	<body>
+	<body data-syntax-theme="github">
+		<a class="skip-link" href="#main">Skip to examples</a>
 		<header>
-			<h1>form-required-if via esm.sh</h1>
-			<p>
+			<p class="eyebrow">Web component / esm</p>
+			<h1>&lt;form-required-if&gt;</h1>
+			<p class="lede">
 				This page loads the component class from <code>esm.sh</code> and
 				registers it manually. See the
 				<a
@@ -17,8 +24,26 @@
 					>README</a
 				>.
 			</p>
+			<nav aria-label="Component resources">
+				<a
+					href="https://github.com/aarongustafson/form-required-if/blob/main/README.md"
+					>Read the README</a
+				>
+				<a href="https://github.com/aarongustafson/form-required-if"
+					>View on GitHub</a
+				>
+				<a href="./index.html">All examples</a>
+				<a href="./unpkg.html">unpkg example</a>
+			</nav>
 		</header>
-		<main>
+		<main id="main" tabindex="-1">
+			<p
+				id="microlighter-status"
+				class="enhancement-status"
+				role="status"
+				hidden
+			></p>
+
 			<p class="note enhancement-note">
 				Select Email, then provide an email address. If JavaScript is
 				unavailable or the module fails to load, the fields still work:
@@ -32,7 +57,16 @@
 			<section class="demo-section">
 				<h2>Manual class registration</h2>
 				<div class="code-demo-pair">
-					<pre><code>&lt;form method="dialog"&gt;
+					<micro-lighter
+						class="code-panel"
+						language="html"
+						controls="copy"
+						data-label="HTML"
+					>
+						<pre
+							aria-label="Manual class registration code 1"
+							tabindex="0"
+						><code>&lt;form method="dialog"&gt;
 &lt;label for="contact-method"&gt;Preferred contact method&lt;/label&gt;
 &lt;select id="contact-method" name="contact-method"&gt;
   &lt;option value=""&gt;Select one&lt;/option&gt;
@@ -46,6 +80,7 @@
 &lt;button type="submit"&gt;Check details&lt;/button&gt;
 &lt;button type="reset"&gt;Reset&lt;/button&gt;
 &lt;/form&gt;</code></pre>
+					</micro-lighter>
 					<div class="demo">
 						<form method="dialog">
 							<label for="contact-method"
@@ -94,5 +129,6 @@
 				);
 			}
 		</script>
+		<script type="module" src="./code-examples.js"></script>
 	</body>
 </html>
