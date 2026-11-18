@@ -25,6 +25,10 @@ for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 				baseURL: 'http://127.0.0.1:4191',
 				javaScriptEnabled: mode !== 'no JavaScript',
 			});
+			await context.route(
+				'https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/**',
+				(route) => route.abort(),
+			);
 			try {
 				const page = await context.newPage();
 				await page.route('https://esm.sh/**', (route) =>

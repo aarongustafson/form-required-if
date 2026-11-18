@@ -5,11 +5,30 @@ import { substitute } from './palettes.js';
 test('forced-color rules restore solid field/button backplates without gradients', async ({
 	page,
 }) => {
-	await page.goto('/demo/index.html');
-	const css = await readFile(
-		new URL('../../demo/styles.css', import.meta.url),
-		'utf8',
+	await page.route(
+		'https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/**',
+		(route) => route.abort(),
 	);
+	await page.goto('/demo/index.html');
+	const css = (
+		await Promise.all(
+			['styles.css', 'demo-shell.css'].map((file) =>
+				readFile(
+					new URL(`../../demo/${file}`, import.meta.url),
+					'utf8',
+				),
+			),
+		)
+	).join('\n');
+	await page
+		.locator('link[rel="stylesheet"]')
+		.evaluateAll((links) => links.forEach((link) => link.remove()));
+	await page.locator('main').evaluate((main) => {
+		const log = document.createElement('pre');
+		log.className = 'event-log';
+		log.textContent = 'Event output';
+		main.append(log);
+	});
 	const forced = await page.evaluate((css) => {
 		const style = document.createElement('style');
 		style.textContent = css;
@@ -36,7 +55,8 @@ test('forced-color rules restore solid field/button backplates without gradients
 		content: substitute(`${css}\n${forced}`, palette),
 	});
 	for (const selector of [
-		'pre',
+		'micro-lighter',
+		'.event-log',
 		'#phone',
 		'#feature-type',
 		'#config',
@@ -66,4 +86,8 @@ test('forced-color rules restore solid field/button backplates without gradients
 			);
 		}
 	}
+	const snippet = page.locator('micro-lighter pre').first();
+	await expect(snippet).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+	await expect(snippet).toHaveCSS('background-image', 'none');
+	await expect(snippet).toHaveCSS('color', 'rgb(18, 18, 18)');
 });
