@@ -149,6 +149,10 @@ for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 			const context = await browser.newContext({
 				javaScriptEnabled: failure !== 'no JavaScript',
 			});
+			await context.route(
+				'https://cdn.jsdelivr.net/npm/microlighter@2.2.0/dist/**',
+				(route) => route.abort(),
+			);
 			const page = await context.newPage();
 			if (failure === 'module failure')
 				await page.route(
