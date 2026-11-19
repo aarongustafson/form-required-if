@@ -127,8 +127,6 @@ footer {
 	margin-trim: block;
 	margin-block: 2rem;
 	padding: 1.5rem;
-	background: Canvas;
-	color: CanvasText;
 	border-radius: 8px;
 	border: 1px solid ButtonBorder;
 }
@@ -331,8 +329,6 @@ small {
    ========================================================================== */
 
 .api-reference {
-	background: Canvas;
-	color: CanvasText;
 	border-inline-start: 4px solid currentColor;
 	padding: 1rem;
 	margin-block: 2rem;
