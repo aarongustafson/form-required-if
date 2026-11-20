@@ -1,6 +1,6 @@
-import { readFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
 import { substitute } from './palettes.js';
+import { readDemoStyles } from './demo-fixture.js';
 
 test('forced-color rules restore solid field/button backplates without gradients', async ({
 	page,
@@ -10,16 +10,7 @@ test('forced-color rules restore solid field/button backplates without gradients
 		(route) => route.abort(),
 	);
 	await page.goto('/demo/index.html');
-	const css = (
-		await Promise.all(
-			['styles.css', 'demo-shell.css'].map((file) =>
-				readFile(
-					new URL(`../../demo/${file}`, import.meta.url),
-					'utf8',
-				),
-			),
-		)
-	).join('\n');
+	const css = await readDemoStyles();
 	await page
 		.locator('link[rel="stylesheet"]')
 		.evaluateAll((links) => links.forEach((link) => link.remove()));
@@ -65,8 +56,8 @@ test('forced-color rules restore solid field/button backplates without gradients
 		'button[type="reset"]',
 	]) {
 		const element = page.locator(selector).first();
-		const buttonPair =
-			selector.includes('button') || selector.includes('code');
+		const buttonPair = selector.includes('button');
+		const inlineCode = selector.includes('code');
 		for (const hover of [false, true]) {
 			if (hover) await element.hover();
 			expect(
@@ -80,9 +71,11 @@ test('forced-color rules restore solid field/button backplates without gradients
 				}),
 				selector,
 			).toEqual(
-				buttonPair
-					? ['rgb(32, 48, 64)', 'none', 'rgb(250, 250, 250)']
-					: ['rgb(224, 224, 224)', 'none', 'rgb(18, 18, 18)'],
+				inlineCode
+					? ['rgba(0, 0, 0, 0)', 'none', 'rgb(238, 238, 238)']
+					: buttonPair
+						? ['rgb(32, 48, 64)', 'none', 'rgb(250, 250, 250)']
+						: ['rgb(224, 224, 224)', 'none', 'rgb(18, 18, 18)'],
 			);
 		}
 	}

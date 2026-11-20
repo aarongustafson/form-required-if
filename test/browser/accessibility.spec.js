@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
 import { measurements, palettes, substitute } from './palettes.js';
+import { expectNativeFocus, readDemoStyles } from './demo-fixture.js';
 
 const read = (path) =>
 	readFile(new URL(`../../${path}`, import.meta.url), 'utf8');
@@ -84,16 +85,7 @@ for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 				/Email \(required when email selected\)/,
 			);
 		}
-		await field.focus();
-		expect(
-			await field.evaluate((field) => {
-				const style = getComputedStyle(field);
-				return (
-					style.outlineStyle !== 'none' &&
-					style.outlineWidth !== '0px'
-				);
-			}),
-		).toBe(true);
+		await expectNativeFocus(field);
 		expect(
 			await field.evaluate((field) => field.form.reportValidity()),
 		).toBe(false);
@@ -174,22 +166,23 @@ for (const name of ['index.html', 'esm.html', 'unpkg.html']) {
 }
 
 test('baseline keeps native focus, supporting text, and reading surfaces', async () => {
-	const css = await read('demo/styles.css');
-	expect(css).not.toMatch(
+	const local = await read('demo/styles.css');
+	expect(local).not.toMatch(
 		/GrayText|ActiveText|SelectedItem|Highlight|AccentColor/,
 	);
-	expect(css).not.toMatch(/:focus-visible|opacity:\s*0\./);
-	expect(css).toMatch(/background(?:-color)?:\s*Canvas/);
+	expect(local).not.toMatch(/:focus-visible|opacity:\s*0\./);
+	const css = await readDemoStyles();
+	expect(css).not.toMatch(/GrayText|ActiveText|SelectedItem|Highlight/);
+	expect(css).toMatch(
+		/background(?:-color)?:\s*(?:var\(--page-background,\s*)?Canvas/,
+	);
 });
 
 test('all 19 study palettes retain reading, required-theme, field, and button contrast', async ({
 	page,
 }) => {
 	await demo(page);
-	const css = [
-		await read('demo/styles.css'),
-		await read('demo/demo-shell.css'),
-	].join('\n');
+	const css = await readDemoStyles();
 	await page
 		.locator('link[rel="stylesheet"]')
 		.evaluateAll((links) => links.forEach((link) => link.remove()));
@@ -339,6 +332,7 @@ test('increased contrast and supported forced-color emulation retain native focu
 	await page.keyboard.press('Tab');
 	const field = page.locator('#phone');
 	await expect(field).toBeFocused();
+	await expectNativeFocus(field);
 	await expect(page.locator('#phone-required')).toBeVisible();
 	const styles = await field.evaluate((field) => {
 		const style = getComputedStyle(field);
